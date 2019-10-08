@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.usf.pickup.BottomNav;
 import com.usf.pickup.MainActivity;
 import com.usf.pickup.R;
 import com.usf.pickup.ui.login.LoginViewModel;
@@ -122,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
-        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        startActivity(new Intent(LoginActivity.this, BottomNav.class));
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
