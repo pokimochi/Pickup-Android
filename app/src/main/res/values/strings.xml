@@ -15,4 +15,15 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_register">Register</string>
+    <string name="title_activity_forget_password">Forget Password</string>
+    <string name="recover_password_title">Send E-mail Confirmation</string>
+    <string name="recover_password_hint">E-mail Address</string>
+    <string name="action_send">Send</string>
+    <string name="register_email">E-mail Address</string>
+    <string name="register_username">Username</string>
+    <string name="register_password">Password</string>
+    <string name="register_confirm_password">Confirm Password</string>
+
+
 </resources>
