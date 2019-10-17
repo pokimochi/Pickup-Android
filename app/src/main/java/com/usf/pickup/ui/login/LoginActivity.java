@@ -24,10 +24,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.usf.pickup.BottomNav;
-import com.usf.pickup.MainActivity;
+import com.usf.pickup.ForgetPassword;
 import com.usf.pickup.R;
-import com.usf.pickup.ui.login.LoginViewModel;
-import com.usf.pickup.ui.login.LoginViewModelFactory;
+import com.usf.pickup.Register;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -40,9 +39,11 @@ public class LoginActivity extends AppCompatActivity {
         loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = findViewById(R.id.username);
-        final EditText passwordEditText = findViewById(R.id.password);
-        final Button loginButton = findViewById(R.id.login);
+        final EditText usernameEditText = findViewById(R.id.username_text_box);
+        final EditText passwordEditText = findViewById(R.id.password_text_box);
+        final Button loginButton = findViewById(R.id.login_button);
+        final Button registerButton = findViewById(R.id.register_button);
+        final Button forgetButton = findViewById(R.id.forget_password_button);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
@@ -118,6 +119,20 @@ public class LoginActivity extends AppCompatActivity {
                 loadingProgressBar.setVisibility(View.VISIBLE);
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
+            }
+        });
+
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, Register.class));
+            }
+        });
+
+        forgetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(LoginActivity.this, ForgetPassword.class));
             }
         });
     }
