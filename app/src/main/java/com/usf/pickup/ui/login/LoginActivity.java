@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.usf.pickup.BottomNav;
 import com.usf.pickup.ForgetPassword;
+import com.usf.pickup.Pickup;
 import com.usf.pickup.R;
 import com.usf.pickup.Register;
 
@@ -138,6 +139,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void updateUiWithUser(LoggedInUserView model) {
+        ((Pickup)getApplication()).setLoggedInUserView(model);
         startActivity(new Intent(LoginActivity.this, BottomNav.class));
     }
 
