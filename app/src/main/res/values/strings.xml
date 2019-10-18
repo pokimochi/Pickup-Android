@@ -12,9 +12,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_bottom_nav">BottomNav</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_create">Create Games</string>
+    <string name="title_search_games">Search Games</string>
+    <string name="title_profile">My Profile</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_forget_password">Forget Password</string>
     <string name="recover_password_title">Send E-mail Confirmation</string>
@@ -24,6 +24,15 @@
     <string name="register_username">Username</string>
     <string name="register_password">Password</string>
     <string name="register_confirm_password">Confirm Password</string>
-
+    <string name="title_create_game">Create a Game</string>
+    <string name="action_submit">Submit</string>
+    <string name="action_clear">Clear</string>
+    <string name="hint_game_title">Game Title</string>
+    <string name="hint_sport">Sport</string>
+    <string name="hint_no_players">Total Players</string>
+    <string name="hint_location">Location</string>
+    <string name="hint_date">Date</string>
+    <string name="hint_start_time">Starts At</string>
+    <string name="hint_end_time">Ends At</string>
 
 </resources>
