@@ -28,6 +28,7 @@ import com.usf.pickup.ForgetPassword;
 import com.usf.pickup.Pickup;
 import com.usf.pickup.R;
 import com.usf.pickup.Register;
+import com.usf.pickup.api.ApiResult;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -37,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
+        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory(getApplication()))
                 .get(LoginViewModel.class);
 
         final EditText usernameEditText = findViewById(R.id.username_text_box);
@@ -63,23 +64,23 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        loginViewModel.getLoginResult().observe(this, new Observer<LoginResult>() {
+        loginViewModel.getLoginResult().observe(this, new Observer<ApiResult<String>>() {
             @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
+            public void onChanged(ApiResult<String> loginResult) {
                 if (loginResult == null) {
                     return;
                 }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-                }
-                setResult(Activity.RESULT_OK);
 
-                //Complete and destroy login activity once successful
-                finish();
+                loadingProgressBar.setVisibility(View.GONE);
+                if(loginResult.isSuccess()){
+                    updateUiWithUser(loginResult.getData());
+
+                    //Complete and destroy login activity once successful
+                    setResult(Activity.RESULT_OK);
+                    finish();
+                }else {
+                    showLoginFailed(loginResult.getErrorMessage());
+                }
             }
         });
 
@@ -138,12 +139,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
-        ((Pickup)getApplication()).setLoggedInUserView(model);
+    private void updateUiWithUser(String apiKey) {
         startActivity(new Intent(LoginActivity.this, BottomNav.class));
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
+    private void showLoginFailed(String errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 }

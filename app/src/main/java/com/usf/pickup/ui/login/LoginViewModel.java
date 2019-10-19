@@ -1,54 +1,55 @@
 package com.usf.pickup.ui.login;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
+import android.app.Application;
 import android.util.Patterns;
 
-import com.usf.pickup.data.LoginRepository;
-import com.usf.pickup.data.Result;
-import com.usf.pickup.data.model.LoggedInUser;
-import com.usf.pickup.R;
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-public class LoginViewModel extends ViewModel {
+import com.usf.pickup.R;
+import com.usf.pickup.api.ApiClient;
+import com.usf.pickup.api.ApiResult;
+
+public class LoginViewModel extends AndroidViewModel {
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
-    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
-    private LoginRepository loginRepository;
+    private MutableLiveData<ApiResult<String>> loginResult = new MutableLiveData<>();
 
-    LoginViewModel(LoginRepository loginRepository) {
-        this.loginRepository = loginRepository;
+    public LoginViewModel(@NonNull Application application) {
+        super(application);
     }
 
     LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
     }
 
-    LiveData<LoginResult> getLoginResult() {
+    LiveData<ApiResult<String>> getLoginResult() {
         return loginResult;
     }
 
     public void login(String username, String password) {
-        // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = loginRepository.login(username, password);
-
-        if (result instanceof Result.Success) {
-            LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getDisplayName())));
-        } else {
-            loginResult.setValue(new LoginResult(R.string.login_failed));
-        }
+        ApiClient.getInstance(getApplication()).login(username, password, new ApiResult.Listener<String>() {
+            @Override
+            public void onResponse(ApiResult<String> response) {
+                loginResult.setValue(response);
+            }
+        });
     }
 
     public void loginDataChanged(String username, String password) {
+        LoginFormState login = new LoginFormState();
+
         if (!isUserNameValid(username)) {
-            loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
-        } else if (!isPasswordValid(password)) {
-            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
-        } else {
-            loginFormState.setValue(new LoginFormState(true));
+            login.setUsernameError(R.string.invalid_username);
         }
+
+        if (!isPasswordValid(password)) {
+            login.setPasswordError(R.string.invalid_password);
+        }
+
+        loginFormState.setValue(login);
     }
 
     // A placeholder username validation check
@@ -56,15 +57,12 @@ public class LoginViewModel extends ViewModel {
         if (username == null) {
             return false;
         }
-        if (username.contains("@")) {
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
-        } else {
-            return !username.trim().isEmpty();
-        }
+
+        return Patterns.EMAIL_ADDRESS.matcher(username).matches();
     }
 
     // A placeholder password validation check
     private boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() > 5;
+        return password != null && !password.isEmpty();
     }
 }
