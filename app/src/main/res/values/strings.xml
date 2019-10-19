@@ -34,5 +34,5 @@
     <string name="hint_date">Date</string>
     <string name="hint_start_time">Starts At</string>
     <string name="hint_end_time">Ends At</string>
-
+    <string name="title_current_games">Current Games</string>
 </resources>
