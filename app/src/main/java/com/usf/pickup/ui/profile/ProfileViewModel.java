@@ -8,11 +8,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.usf.pickup.Pickup;
-import com.usf.pickup.ui.login.LoggedInUserView;
 
 public class ProfileViewModel extends AndroidViewModel {
-
-    final private LoggedInUserView userData = ((Pickup) getApplication()).getUserData();
     private MutableLiveData<String> displayName;
     private MutableLiveData<Uri> profilePicturePath;
     private int gamesPlayed;
@@ -20,7 +17,7 @@ public class ProfileViewModel extends AndroidViewModel {
 
     private void initializeUserData() {
         displayName = new MutableLiveData<>();
-        displayName.setValue(userData.getDisplayName());
+        displayName.setValue("Placeholder");
 
         // Get and set profile picture uri from DB here
     }
