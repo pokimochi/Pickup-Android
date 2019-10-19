@@ -16,5 +16,10 @@
     <style name="Button.Red" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">#E64545</item>
     </style>
-
+    <style name="Button.Orange" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">#FCA416</item>
+    </style>
+    <style name="Button.Grey" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">#D1D1D1</item>
+    </style>
 </resources>
