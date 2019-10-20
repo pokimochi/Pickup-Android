@@ -19,6 +19,7 @@
         android:layout_gravity="start"
         android:layout_marginBottom="56dp"
         android:enabled="true"
+        android:visibility="gone"
         android:text="@string/action_forget_password"
         android:theme="@style/Button.Grey"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -28,7 +29,7 @@
     <Button
         android:id="@+id/register_button"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="88dp"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginBottom="12dp"
@@ -43,7 +44,7 @@
     <Button
         android:id="@+id/login_button"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
+        android:layout_width="340dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginBottom="9dp"
@@ -65,7 +66,7 @@
         android:layout_marginEnd="44dp"
         android:layout_marginRight="44dp"
         android:hint="@string/prompt_password"
-        android:imeActionLabel="@string/action_sign_in_short"
+        android:imeActionLabel="@string/action_sign_in"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:selectAllOnFocus="true"
@@ -73,12 +74,12 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_text_box"
+        app:layout_constraintTop_toBottomOf="@+id/email_text_box"
         android:autofillHints="password"
         tools:ignore="UnusedAttribute" />
 
     <EditText
-        android:id="@+id/username_text_box"
+        android:id="@+id/email_text_box"
         android:layout_width="340dp"
         android:layout_height="50dp"
 
@@ -125,7 +126,7 @@
         android:layout_marginEnd="86dp"
         android:layout_marginRight="86dp"
         android:layout_marginBottom="11dp"
-        app:layout_constraintBottom_toTopOf="@+id/username_text_box"
+        app:layout_constraintBottom_toTopOf="@+id/email_text_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

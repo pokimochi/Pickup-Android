@@ -11,6 +11,7 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.usf.pickup.R;
+import com.usf.pickup.api.models.User;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,11 +44,11 @@ public class ApiClient {
         return requestQueue;
     }
 
-    public <T> void addToRequestQueue(Request<T> req) {
+    private  <T> void addToRequestQueue(Request<T> req) {
         getRequestQueue().add(req);
     }
 
-    public void login(String email, String password, final ApiResult.Listener<String> listener){
+    public void login(final String email, final String password, final ApiResult.Listener<String> listener){
         try {
             String url = ctx.getResources().getString(R.string.api_url) +
                     ctx.getResources().getString(R.string.auth_login);
@@ -64,6 +65,17 @@ public class ApiClient {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<String>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException ignored) {
+                        } catch (UnsupportedEncodingException ignored) {
+                        }
+                    }
+
                     listener.onResponse(ApiResult.<String>Error(ctx.getString(R.string.login_failed)));
                 }
             }){
@@ -84,6 +96,45 @@ public class ApiClient {
             };
 
             addToRequestQueue(stringRequest);
+        } catch (JSONException ignored) {
+        }
+    }
+
+    public void register(final String email, final String password, final String confirmPassword, final String displayName, final ApiResult.Listener<User> listener){
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.auth_register);
+
+            final JSONObject params = new JSONObject();
+            params.put("email", email);
+            params.put("password", password);
+            params.put("confirmPassword", confirmPassword);
+            params.put("displayName", displayName);
+
+            GsonRequest<User> gsonRequest = new GsonRequest<>(Request.Method.POST, url, User.class, params, null, new Response.Listener<User>() {
+                @Override
+                public void onResponse(User response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<User>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException ignored) {
+                        } catch (UnsupportedEncodingException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<User>Error(ctx.getString(R.string.register_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
         } catch (JSONException ignored) {
         }
     }

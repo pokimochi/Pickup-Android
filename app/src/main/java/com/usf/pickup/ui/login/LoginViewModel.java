@@ -13,7 +13,6 @@ import com.usf.pickup.api.ApiClient;
 import com.usf.pickup.api.ApiResult;
 
 public class LoginViewModel extends AndroidViewModel {
-
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<ApiResult<String>> loginResult = new MutableLiveData<>();
 
@@ -29,8 +28,8 @@ public class LoginViewModel extends AndroidViewModel {
         return loginResult;
     }
 
-    public void login(String username, String password) {
-        ApiClient.getInstance(getApplication()).login(username, password, new ApiResult.Listener<String>() {
+    public void login(String email, String password) {
+        ApiClient.getInstance(getApplication()).login(email, password, new ApiResult.Listener<String>() {
             @Override
             public void onResponse(ApiResult<String> response) {
                 loginResult.setValue(response);
@@ -38,11 +37,11 @@ public class LoginViewModel extends AndroidViewModel {
         });
     }
 
-    public void loginDataChanged(String username, String password) {
+    public void loginDataChanged(String email, String password) {
         LoginFormState login = new LoginFormState();
 
-        if (!isUserNameValid(username)) {
-            login.setUsernameError(R.string.invalid_username);
+        if (!isEmailValid(email)) {
+            login.setEmailError(R.string.invalid_email);
         }
 
         if (!isPasswordValid(password)) {
@@ -52,16 +51,14 @@ public class LoginViewModel extends AndroidViewModel {
         loginFormState.setValue(login);
     }
 
-    // A placeholder username validation check
-    private boolean isUserNameValid(String username) {
-        if (username == null) {
+    private boolean isEmailValid(String email) {
+        if (email == null) {
             return false;
         }
 
-        return Patterns.EMAIL_ADDRESS.matcher(username).matches();
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    // A placeholder password validation check
     private boolean isPasswordValid(String password) {
         return password != null && !password.isEmpty();
     }

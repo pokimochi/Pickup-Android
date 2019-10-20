@@ -3,13 +3,13 @@ package com.usf.pickup.ui.login;
 import android.app.Activity;
 
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.text.Editable;
@@ -25,23 +25,21 @@ import android.widget.Toast;
 
 import com.usf.pickup.BottomNav;
 import com.usf.pickup.ForgetPassword;
-import com.usf.pickup.Pickup;
 import com.usf.pickup.R;
-import com.usf.pickup.Register;
+import com.usf.pickup.ui.register.RegisterActivity;
 import com.usf.pickup.api.ApiResult;
 
 public class LoginActivity extends AppCompatActivity {
-
     private LoginViewModel loginViewModel;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory(getApplication()))
+        loginViewModel = ViewModelProviders.of(this, new ViewModelProvider.AndroidViewModelFactory(getApplication()))
                 .get(LoginViewModel.class);
 
-        final EditText usernameEditText = findViewById(R.id.username_text_box);
+        final EditText emailEditText = findViewById(R.id.email_text_box);
         final EditText passwordEditText = findViewById(R.id.password_text_box);
         final Button loginButton = findViewById(R.id.login_button);
         final Button registerButton = findViewById(R.id.register_button);
@@ -55,14 +53,20 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
+
+                // Clear existing errors
+                emailEditText.setError(null);
+                passwordEditText.setError(null);
+
+                if (loginFormState.getEmailError() != null) {
+                    emailEditText.setError(getString(loginFormState.getEmailError()));
                 }
                 if (loginFormState.getPasswordError() != null) {
                     passwordEditText.setError(getString(loginFormState.getPasswordError()));
                 }
             }
         });
+
 
         loginViewModel.getLoginResult().observe(this, new Observer<ApiResult<String>>() {
             @Override
@@ -73,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 loadingProgressBar.setVisibility(View.GONE);
                 if(loginResult.isSuccess()){
-                    updateUiWithUser(loginResult.getData());
+                    startActivity(new Intent(LoginActivity.this, BottomNav.class));
 
                     //Complete and destroy login activity once successful
                     setResult(Activity.RESULT_OK);
@@ -97,18 +101,20 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
+                loginViewModel.loginDataChanged(emailEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
         };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
+        emailEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.addTextChangedListener(afterTextChangedListener);
         passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
+                LoginFormState formState = loginViewModel.getLoginFormState().getValue();
+                if (actionId == EditorInfo.IME_ACTION_DONE && formState != null &&
+                        formState.isDataValid()) {
+                    loginViewModel.login(emailEditText.getText().toString(),
                             passwordEditText.getText().toString());
                 }
                 return false;
@@ -119,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
+                loginViewModel.login(emailEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
         });
@@ -127,7 +133,7 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, Register.class));
+                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
             }
         });
 
@@ -137,10 +143,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(new Intent(LoginActivity.this, ForgetPassword.class));
             }
         });
-    }
-
-    private void updateUiWithUser(String apiKey) {
-        startActivity(new Intent(LoginActivity.this, BottomNav.class));
     }
 
     private void showLoginFailed(String errorString) {

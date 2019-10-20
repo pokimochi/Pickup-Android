@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register">
+    tools:context=".ui.register.RegisterActivity">
 
     <EditText
         android:id="@+id/confirm_password_text_box"
@@ -17,7 +17,7 @@
         android:layout_marginRight="56dp"
         android:layout_marginBottom="189dp"
         android:ems="10"
-        android:hint="@string/register_confirm_password"
+        android:hint="@string/prompt_confirm_password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -37,17 +37,17 @@
         android:layout_marginRight="56dp"
         android:layout_marginBottom="277dp"
         android:ems="10"
-        android:hint="@string/register_password"
+        android:hint="@string/prompt_password"
         android:inputType="textPassword"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_register_text_box"
+        app:layout_constraintTop_toBottomOf="@+id/display_name_register_text_box"
         android:autofillHints="password"
         tools:ignore="UnusedAttribute" />
 
     <EditText
-        android:id="@+id/username_register_text_box"
+        android:id="@+id/display_name_register_text_box"
         android:layout_width="299dp"
         android:layout_height="52dp"
         android:layout_marginStart="56dp"
@@ -57,7 +57,7 @@
         android:layout_marginRight="56dp"
         android:layout_marginBottom="376dp"
         android:ems="10"
-        android:hint="@string/register_username"
+        android:hint="@string/prompt_display_name"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +78,7 @@
         android:layout_marginRight="56dp"
         android:layout_marginBottom="474dp"
         android:ems="10"
-        android:hint="@string/register_email"
+        android:hint="@string/prompt_email"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,8 +88,9 @@
         tools:ignore="UnusedAttribute" />
 
     <Button
-        android:id="@+id/register_button"
-        android:layout_width="wrap_content"
+        android:id="@+id/register_submit_button"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="299dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="162dp"
         android:layout_marginLeft="162dp"
@@ -97,13 +98,30 @@
         android:layout_marginEnd="162dp"
         android:layout_marginRight="162dp"
         android:layout_marginBottom="96dp"
+        android:enabled="false"
         android:text="@string/action_register"
+        android:theme="@style/Button.Green"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirm_password_text_box"
-        android:theme="@style/Button.Green"
-        style="@style/Widget.AppCompat.Button.Colored"
-        />
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ProgressBar
+        android:id="@+id/register_loading"
+        android:layout_width="0dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/display_name_register_text_box"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="@+id/display_name_register_text_box"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.31" />
 </androidx.constraintlayout.widget.ConstraintLayout>
