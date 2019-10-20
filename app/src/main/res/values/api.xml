@@ -2,4 +2,5 @@
 <resources>
     <string name="api_url">http://192.168.254.20:8080/api</string>
     <string name="auth_login">/auth/login</string>
+    <string name="auth_register">/auth/register</string>
 </resources>
