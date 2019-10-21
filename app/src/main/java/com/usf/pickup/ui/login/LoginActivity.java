@@ -6,30 +6,24 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
-import android.app.KeyguardManager;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.hardware.biometrics.BiometricManager;
-import android.hardware.biometrics.BiometricPrompt;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.os.CancellationSignal;
 import android.preference.PreferenceManager;
-import android.security.keystore.KeyGenParameterSpec;
-import android.security.keystore.KeyProperties;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,23 +34,13 @@ import com.usf.pickup.ForgetPassword;
 import com.usf.pickup.R;
 import com.usf.pickup.helpers.FingerprintEncryptionHelper;
 import com.usf.pickup.ui.register.RegisterActivity;
-import com.usf.pickup.api.ApiResult;
-
-import java.io.IOException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.KeyPairGenerator;
-import java.security.KeyStore;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.cert.CertificateException;
-
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 
 public class LoginActivity extends AppCompatActivity implements FingerprintAuthenticationDialogFragment.Callback {
+    public static final String HIDE_FINGERPRINT_DIALOG = "HIDE_FINGERPRINT_DIALOG";
+
     private final String KEY_EMAIL = "com.usf.pickup.ui.login.email";
     private final String KEY_PASSWORD = "com.usf.pickup.ui.login.password";
+    private final String KEY_REMEMBER_ME = "com.usf.pickup.ui.login.rememberMe";
     private final String DIALOG_FRAGMENT_TAG = "com.usf.pickup.ui.login.dialog";
     private LoginViewModel loginViewModel;
     private SharedPreferences preferences;
@@ -71,11 +55,13 @@ public class LoginActivity extends AppCompatActivity implements FingerprintAuthe
         preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         final EditText emailEditText = findViewById(R.id.email_text_box);
+        final CheckBox rememberMeCheckbox = findViewById(R.id.rememberMeCheckbox);
         final EditText passwordEditText = findViewById(R.id.password_text_box);
         final Button loginButton = findViewById(R.id.login_button);
         final Button registerButton = findViewById(R.id.register_button);
         final Button forgetButton = findViewById(R.id.forget_password_button);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
+        final ImageButton fingerprintButton = findViewById(R.id.fingerprint_auth_button);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
             @Override
@@ -111,18 +97,33 @@ public class LoginActivity extends AppCompatActivity implements FingerprintAuthe
                     startActivity(new Intent(LoginActivity.this, BottomNav.class));
 
                     // Encrypt + Save the password that was successful
-                    String encrpyted = FingerprintEncryptionHelper.encryptString(loginResult.getPassword());
-                    preferences.edit().putString(KEY_EMAIL, loginResult.getEmail()).apply();
-                    preferences.edit().putString(KEY_PASSWORD, encrpyted).apply();
+                    if(rememberMeCheckbox.isChecked()){
+                        String encrpyted = FingerprintEncryptionHelper.encryptString(loginResult.getPassword());
+                        preferences.edit().putString(KEY_EMAIL, loginResult.getEmail()).apply();
+                        preferences.edit().putString(KEY_PASSWORD, encrpyted).apply();
+                    }else{
+                        preferences.edit().remove(KEY_EMAIL).apply();
+                        preferences.edit().remove(KEY_PASSWORD).apply();
+                    }
 
                     //Complete and destroy login activity once successful
                     setResult(Activity.RESULT_OK);
                     finish();
                 }else {
-                    showLoginFailed(loginResult.getApiResult().getErrorMessage());
+                    showError(loginResult.getApiResult().getErrorMessage());
                 }
             }
         });
+
+        if(preferences.contains(KEY_REMEMBER_ME)){
+            boolean rememberMe = preferences.getBoolean(KEY_REMEMBER_ME, false);
+            rememberMeCheckbox.setChecked(rememberMe);
+
+            if(rememberMe && preferences.contains(KEY_EMAIL)){
+                String email = preferences.getString(KEY_EMAIL, null);
+                emailEditText.setText(email);
+            }
+        }
 
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
@@ -157,6 +158,27 @@ public class LoginActivity extends AppCompatActivity implements FingerprintAuthe
             }
         });
 
+        rememberMeCheckbox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CheckBox checkBox = (CheckBox) view;
+
+                preferences.edit().putBoolean(KEY_REMEMBER_ME,  checkBox.isChecked()).apply();
+
+                if(!checkBox.isChecked()){
+                    preferences.edit().remove(KEY_EMAIL).apply();
+                    preferences.edit().remove(KEY_PASSWORD).apply();
+                }
+            }
+        });
+
+        fingerprintButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                runFingerPrintAuth(false);
+            }
+        });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,21 +202,29 @@ public class LoginActivity extends AppCompatActivity implements FingerprintAuthe
             }
         });
 
-        handleRememberedUser();
+        Intent intent = getIntent();
+        if(intent == null || !intent.getBooleanExtra(HIDE_FINGERPRINT_DIALOG, false)){
+            runFingerPrintAuth(true);
+        }
     }
 
-    private void handleRememberedUser(){
+    private void runFingerPrintAuth(boolean silent){
         FingerprintAuthenticationDialogFragment dialogFragment =
                 new FingerprintAuthenticationDialogFragment(
                         FingerprintEncryptionHelper.getCryptoObject(), this);
 
-        if(preferences.contains(KEY_EMAIL) && preferences.contains(KEY_PASSWORD) &&
-                FingerprintAuthenticationDialogFragment.isFingerPrintAuthAvailable(this)){
-            dialogFragment.show(getSupportFragmentManager(), DIALOG_FRAGMENT_TAG);
+        if(preferences.contains(KEY_EMAIL) && preferences.contains(KEY_PASSWORD)){
+            if(FingerprintAuthenticationDialogFragment.isFingerPrintAuthAvailable(this)){
+                dialogFragment.show(getSupportFragmentManager(), DIALOG_FRAGMENT_TAG);
+            }else {
+                if (!silent) showError(getString(R.string.fingerprint_auth_unavailable_hardware));
+            }
+        }else {
+            if (!silent) showError(getString(R.string.fingerprint_auth_unavailable_user));
         }
     }
 
-    private void showLoginFailed(String errorString) {
+    private void showError(String errorString) {
         Toast.makeText(getApplicationContext(), errorString, Toast.LENGTH_SHORT).show();
     }
 

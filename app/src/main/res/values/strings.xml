@@ -42,4 +42,8 @@
     <string name="fingerprint_not_recognized">Fingerprint not recognized. Try again</string>
     <string name="fingerprint_success">Fingerprint recognized</string>
     <string name="cancel">Cancel</string>
+    <string name="remember_me">Remember Me</string>
+    <string name="logout">Logout</string>
+    <string name="fingerprint_auth_unavailable_hardware">Fingerprint Authentication Unavailable. No fingerprints available.</string>
+    <string name="fingerprint_auth_unavailable_user">Fingerprint Authentication Unavailable. No user information saved.</string>
 </resources>
