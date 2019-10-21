@@ -36,4 +36,10 @@
     <string name="hint_end_time">Ends At</string>
     <string name="title_current_games">Current Games</string>
     <string name="label_logo_login">Banner</string>
+    <string name="fingerprint_description">Confirm fingerprint to continue</string>
+    <string name="fingerprint_hint">Touch sensor</string>
+    <string name="description_fingerprint_icon">Fingerprint icon</string>
+    <string name="fingerprint_not_recognized">Fingerprint not recognized. Try again</string>
+    <string name="fingerprint_success">Fingerprint recognized</string>
+    <string name="cancel">Cancel</string>
 </resources>

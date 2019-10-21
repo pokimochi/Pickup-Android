@@ -22,4 +22,7 @@
     <style name="Button.Grey" parent="ThemeOverlay.AppCompat">
         <item name="colorAccent">#D1D1D1</item>
     </style>
+    <style name="FingerPrintDialog" parent="@style/Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowNoTitle">false</item>
+    </style>
 </resources>

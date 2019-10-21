@@ -65,7 +65,7 @@ public class ApiClient {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    if(error.networkResponse.data != null){
+                    if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
                             JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
 
@@ -119,7 +119,7 @@ public class ApiClient {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    if(error.networkResponse.data != null){
+                    if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
                             JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
 
