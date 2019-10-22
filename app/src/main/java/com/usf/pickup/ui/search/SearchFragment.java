@@ -45,12 +45,12 @@ public class SearchFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((BottomNav) getActivity()).setTheme(R.style.AppTheme_NoActionBar);
+        ((BottomNav) getActivity()).getSupportActionBar().hide();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        ((BottomNav) getActivity()).setTheme(R.style.AppTheme);
+        ((BottomNav) getActivity()).getSupportActionBar().show();
     }
 }
