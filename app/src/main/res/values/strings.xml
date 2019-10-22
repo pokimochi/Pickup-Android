@@ -8,7 +8,7 @@
     <string name="prompt_confirm_password">Confirm Password</string>
     <string name="action_sign_in">Login</string>
     <string name="action_register">Register</string>
-    <string name="action_forget_password">Forget Password</string>
+    <string name="action_forget_password">Forgot Password</string>
     <string name="invalid_email">Please enter a valid email address</string>
     <string name="invalid_password">Please enter a password</string>
     <string name="invalid_display_name">Display name must be 2 to 30 characters and can only contain letters and separators</string>
