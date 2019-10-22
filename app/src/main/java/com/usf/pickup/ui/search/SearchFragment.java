@@ -15,8 +15,9 @@ import androidx.lifecycle.ViewModelProviders;
 import com.usf.pickup.R;
 
 public class SearchFragment extends Fragment {
-
+    private final String DIALOG_FRAGMENT_TAG = "com.usf.pickup.ui.search.dialog";
     private SearchViewModel searchViewModel;
+    private FilterBottomSheetDialogFragment filterBottomSheetDialogFragment;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,6 +31,11 @@ public class SearchFragment extends Fragment {
                 textView.setText(s);
             }
         });
+
+        // Opens Filter
+        filterBottomSheetDialogFragment = new FilterBottomSheetDialogFragment();
+        filterBottomSheetDialogFragment.show(getFragmentManager(), DIALOG_FRAGMENT_TAG);
+
         return root;
     }
 }
