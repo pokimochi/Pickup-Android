@@ -41,6 +41,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
+        <ImageButton
+            android:id="@+id/filter_button"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#FFBB4F"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingRight="26dp"
+            app:srcCompat="@drawable/ic_filter_list_black_24dp"/>
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
@@ -53,19 +63,6 @@
             android:entries="@array/placeholder_sports"
             android:backgroundTint="#FFFFFF"
             />
-        <ImageButton
-            android:id="@+id/filter_button"
-            android:layout_gravity="end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="#FFBB4F"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:paddingRight="26dp"
-            app:srcCompat="@drawable/ic_filter_list_black_24dp"
-            tools:layout_editor_absoluteX="109dp"
-            tools:layout_editor_absoluteY="179dp" />
-
     </androidx.appcompat.widget.Toolbar>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
