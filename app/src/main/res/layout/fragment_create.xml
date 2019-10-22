@@ -117,9 +117,8 @@
         android:layout_height="52dp"
 
         android:layout_marginStart="35dp"
-        android:layout_marginLeft="35dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="36dp"
-        android:layout_marginRight="36dp"
         android:hint="@string/hint_game_title"
         android:inputType="textEmailAddress"
         android:selectAllOnFocus="true"
