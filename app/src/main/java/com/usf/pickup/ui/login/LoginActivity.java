@@ -29,7 +29,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.usf.pickup.BottomNav;
-import com.usf.pickup.FingerprintAuthenticationDialogFragment;
 import com.usf.pickup.ForgetPassword;
 import com.usf.pickup.R;
 import com.usf.pickup.helpers.FingerprintEncryptionHelper;
