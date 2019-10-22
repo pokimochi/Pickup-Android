@@ -1,4 +1,4 @@
-package com.usf.pickup;
+package com.usf.pickup.ui.login;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -17,6 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import com.usf.pickup.R;
 
 public class FingerprintAuthenticationDialogFragment extends DialogFragment {
     private ImageView icon;

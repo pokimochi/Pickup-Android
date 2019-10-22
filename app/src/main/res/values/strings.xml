@@ -47,6 +47,11 @@
     <string name="filter">Filter</string>
     <string name="fingerprint_auth_unavailable_hardware">Fingerprint Authentication Unavailable. No fingerprints available.</string>
     <string name="fingerprint_auth_unavailable_user">Fingerprint Authentication Unavailable. No user information saved.</string>
+    <string name="filter_title">Filter</string>
+    <string name="do_not_show_full">Do not show full games</string>
+    <string name="do_not_show_ongoing">Do not show ongoing games</string>
+    <string name="max_distance">Maximum Distance</string>
+    <string name="starts_in">Starts In</string>
     <string-array name="placeholder_sports">
         <item>Tennis</item>
         <item>Soccer</item>

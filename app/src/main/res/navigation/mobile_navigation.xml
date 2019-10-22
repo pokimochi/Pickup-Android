@@ -15,6 +15,7 @@
         android:id="@+id/navigation_dashboard"
         android:name="com.usf.pickup.ui.search.SearchFragment"
         android:label="@string/title_search_games"
+        android:theme="@style/AppTheme.NoActionBar"
         tools:layout="@layout/fragment_search" />
 
     <fragment
