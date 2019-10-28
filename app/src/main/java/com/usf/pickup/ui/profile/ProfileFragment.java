@@ -10,11 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.usf.pickup.R;
+import com.usf.pickup.api.models.User;
 
 public class ProfileFragment extends Fragment {
 
@@ -28,12 +30,16 @@ public class ProfileFragment extends Fragment {
         final ImageView profilePicture = root.findViewById(R.id.profile_pic);
         final TextView profileName = root.findViewById(R.id.display_name);
 
-        profileViewModel.getDisplayName().observe(this, new Observer<String>() {
+        profileViewModel.getUser().observe(this, new Observer<User>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                profileName.setText(s);
+            public void onChanged(@Nullable User user) {
+                if (user != null){
+                    profileName.setText(user.getDisplayName());
+                }
             }
         });
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
 
         // Uncomment this once uri's are being set for the profile picture
 //        profileViewModel.getProfilePicturePath().observe(this, new Observer<Uri>() {
