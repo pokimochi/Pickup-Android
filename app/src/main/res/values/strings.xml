@@ -57,4 +57,8 @@
         <item>Soccer</item>
         <item>Football</item>
     </string-array>
+    <string name="get_sports_failed">Failed to get the list of supported sports</string>
+    <string name="get_settings_failed">Failed to get user settings</string>
+    <string name="default_players">10</string>
+    <string name="game_description">Description</string>
 </resources>
