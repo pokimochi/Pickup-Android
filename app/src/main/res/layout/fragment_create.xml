@@ -9,17 +9,31 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <fragment
-            android:id="@+id/autocomplete_fragment"
-            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:id="@+id/locationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/locationLabel"
-            tools:layout="@layout/places_autocomplete_fragment" />
+            app:layout_constraintTop_toBottomOf="@+id/descriptionEditText">
+
+            <TextView
+                android:id="@+id/locationLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hint_location"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/locationTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_a_location" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/endsAtLayout"
@@ -81,7 +95,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/autocomplete_fragment">
+            app:layout_constraintTop_toBottomOf="@+id/locationLayout">
 
             <TextView
                 android:id="@+id/dateLabel"
@@ -99,13 +113,18 @@
         <Button
             android:id="@+id/submit_button"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="108dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:enabled="false"
             android:text="@string/action_submit"
             android:theme="@style/Button.Green"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/endsAtLayout" />
 
         <Spinner
@@ -135,19 +154,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/clear_button"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="108dp"
-            android:layout_marginBottom="16dp"
-            android:text="@string/action_clear"
-            android:theme="@style/Button.Red"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/submit_button" />
-
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
@@ -164,7 +170,7 @@
             android:layout_height="wrap_content"
             android:text="@string/hint_no_players"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/editText"
+            app:layout_constraintStart_toStartOf="@+id/numberPlayersEditText"
             app:layout_constraintTop_toTopOf="@+id/textView3" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -177,7 +183,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/numberPlayersEditText"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginStart="8dp"
@@ -191,24 +197,14 @@
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
-        <TextView
-            android:id="@+id/locationLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/hint_location"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@+id/dateLayout"
-            app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/descriptionEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ems="10"
             android:gravity="start|top"
             android:inputType="textMultiLine"
-            app:layout_constraintEnd_toEndOf="@+id/editText"
+            app:layout_constraintEnd_toEndOf="@+id/numberPlayersEditText"
             app:layout_constraintStart_toStartOf="@+id/sport_dropdown"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
