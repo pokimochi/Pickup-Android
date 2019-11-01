@@ -44,6 +44,7 @@
     <string name="cancel">Cancel</string>
     <string name="remember_me">Remember Me</string>
     <string name="logout">Logout</string>
+    <string name="filter">Filter</string>
     <string name="fingerprint_auth_unavailable_hardware">Fingerprint Authentication Unavailable. No fingerprints available.</string>
     <string name="fingerprint_auth_unavailable_user">Fingerprint Authentication Unavailable. No user information saved.</string>
     <string name="filter_title">Filter</string>
@@ -51,4 +52,20 @@
     <string name="do_not_show_ongoing">Do not show ongoing games</string>
     <string name="max_distance">Maximum Distance</string>
     <string name="starts_in">Starts In</string>
+    <string-array name="placeholder_sports">
+        <item>Tennis</item>
+        <item>Soccer</item>
+        <item>Football</item>
+    </string-array>
+    <string name="get_sports_failed">Failed to get the list of supported sports</string>
+    <string name="get_settings_failed">Failed to get user settings</string>
+    <string name="default_players">10</string>
+    <string name="game_description">Description</string>
+    <string name="select_a_location">Tap to select a location…</string>
+    <string name="invalid_game_title">Game titles must be 1 to 140 characters</string>
+    <string name="invalid_game_sport">Select a sport</string>
+    <string name="invalid_game_players">Games must have 2 to 250 players</string>
+    <string name="invalid_game_description">Description must be shorter than 280 characters</string>
+    <string name="invalid_game_location">Select a game location</string>
+    <string name="create_failed">Create Game Failed</string>
 </resources>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="api_url">http://192.168.1.20:8080/api</string>
+    <string name="places_api_key">AIzaSyB2gnNxEwxMlwtpR6tvh4lzI0jeY5UO4Ac</string>
+    <string name="api_url">http://192.168.1.240:8080/api</string>
     <string name="auth_login">/auth/login</string>
     <string name="auth_register">/auth/register</string>
+    <string name="settings">/settings</string>
+    <string name="game">/game</string>
+    <string name="game_sports">/game/sports</string>
 </resources>

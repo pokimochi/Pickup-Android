@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import com.usf.pickup.BottomNav;
 import com.usf.pickup.ForgetPassword;
+import com.usf.pickup.Pickup;
 import com.usf.pickup.R;
 import com.usf.pickup.helpers.FingerprintEncryptionHelper;
 import com.usf.pickup.ui.register.RegisterActivity;
@@ -93,6 +94,9 @@ public class LoginActivity extends AppCompatActivity implements FingerprintAuthe
 
                 loadingProgressBar.setVisibility(View.GONE);
                 if(loginResult.getApiResult().isSuccess()){
+                    // Set JWT
+                    ((Pickup) getApplication()).setJwt(loginResult.getApiResult().getData());
+
                     startActivity(new Intent(LoginActivity.this, BottomNav.class));
 
                     // Encrypt + Save the password that was successful
@@ -232,7 +236,9 @@ public class LoginActivity extends AppCompatActivity implements FingerprintAuthe
         String email = preferences.getString(KEY_EMAIL, null);
         String encryptedPass = preferences.getString(KEY_PASSWORD, null);
         String pass = FingerprintEncryptionHelper.decryptString(encryptedPass, cryptoObject.getCipher());
+        final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
+        loadingProgressBar.setVisibility(View.VISIBLE);
         loginViewModel.login(email, pass);
     }
 

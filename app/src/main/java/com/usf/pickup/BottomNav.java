@@ -6,15 +6,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.usf.pickup.ui.login.LoginActivity;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.usf.pickup.ui.login.LoginActivity;
 
 public class BottomNav extends AppCompatActivity {
 
@@ -24,12 +24,18 @@ public class BottomNav extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.top_menu, menu);
+
+        getSupportActionBar().setShowHideAnimationEnabled(false);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_logout) {
+            // Clear JWT
+            ((Pickup) getApplication()).setJwt(null);
+
             Intent intent = new Intent(BottomNav.this, LoginActivity.class);
             intent.putExtra(LoginActivity.HIDE_FINGERPRINT_DIALOG, true);
             startActivity(intent);
@@ -58,5 +64,4 @@ public class BottomNav extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
-
 }
