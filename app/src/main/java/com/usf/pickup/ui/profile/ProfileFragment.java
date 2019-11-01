@@ -14,7 +14,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.usf.pickup.BottomNav;
 import com.usf.pickup.R;
+
+import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
@@ -44,5 +47,11 @@ public class ProfileFragment extends Fragment {
 //        });
 
         return root;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(((BottomNav) Objects.requireNonNull(getActivity())).getSupportActionBar()).show();
     }
 }

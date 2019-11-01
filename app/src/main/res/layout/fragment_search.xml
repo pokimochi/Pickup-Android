@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="0dp"
-    android:paddingTop="0dp">
+    android:paddingTop="0dp"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar2"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="70dp"
         android:background="?attr/colorPrimary"
+        android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,11 +27,13 @@
             android:layout_width="379dp"
             android:layout_height="40dp"
             android:background="#FFFFFF"
-            android:drawableRight="@drawable/ic_my_location_black_24dp"
-            android:hint="4202 E Fowler Ave, Tampa, FL 33620"
+            android:drawableEnd="@drawable/ic_my_location_black_24dp"
+            android:hint="@string/hint_location"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:theme="@style/Theme.Design.Light" />
+            android:theme="@style/Theme.Design.Light"
+            android:importantForAutofill="no"
+            android:inputType="text" />
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.Toolbar
@@ -36,33 +41,53 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
+        android:elevation="10dp"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
+
         <ImageButton
             android:id="@+id/filter_button"
-            android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#FFBB4F"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:paddingRight="26dp"
-            app:srcCompat="@drawable/ic_filter_list_black_24dp"/>
+            android:layout_gravity="end"
+            android:background="#FFBB4F"
+            android:paddingEnd="26dp"
+            app:srcCompat="@drawable/ic_filter_list_black_24dp"
+            android:contentDescription="@string/filter"
+            tools:ignore="RtlSymmetry" />
+
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/search_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_search_24dp"/>
+            app:srcCompat="@drawable/ic_search_24dp"
+            android:contentDescription="@string/title_search_games" />
+
         <Spinner
             android:id="@+id/search_spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/placeholder_sports"
             android:backgroundTint="#FFFFFF"
-            />
+            android:entries="@array/placeholder_sports" />
     </androidx.appcompat.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/search_list_view"
+        android:layout_width="414dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="51dp"
+        android:elevation="5dp"
+        android:paddingTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
