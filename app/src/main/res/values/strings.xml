@@ -52,6 +52,7 @@
     <string name="do_not_show_ongoing">Do not show ongoing games</string>
     <string name="max_distance">Maximum Distance</string>
     <string name="starts_in">Starts In</string>
+    <string name="add_game_btn">Add Game Button</string>
     <string-array name="placeholder_sports">
         <item>Tennis</item>
         <item>Soccer</item>

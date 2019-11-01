@@ -38,6 +38,7 @@ import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.usf.pickup.BottomNav;
 import com.usf.pickup.R;
 import com.usf.pickup.api.ApiResult;
 import com.usf.pickup.api.models.Game;
@@ -52,6 +53,8 @@ import java.util.Locale;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
+
+import java.util.Objects;
 
 public class CreateFragment extends Fragment {
     private View root;
@@ -328,5 +331,11 @@ public class CreateFragment extends Fragment {
 
     private void showCreateFailed(String errorString) {
         Toast.makeText(getContext(), errorString, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Objects.requireNonNull(((BottomNav) Objects.requireNonNull(getActivity())).getSupportActionBar()).show();
     }
 }
