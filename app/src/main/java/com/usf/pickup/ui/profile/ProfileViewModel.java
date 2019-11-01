@@ -8,18 +8,24 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.usf.pickup.Pickup;
+import com.usf.pickup.api.ApiClient;
+import com.usf.pickup.api.ApiResult;
+import com.usf.pickup.api.models.User;
 
 public class ProfileViewModel extends AndroidViewModel {
-    private MutableLiveData<String> displayName;
-    private MutableLiveData<Uri> profilePicturePath;
-    private int gamesPlayed;
-    private MutableLiveData<String> profileDetail;
+    private MutableLiveData<User> user;
 
     private void initializeUserData() {
-        displayName = new MutableLiveData<>();
-        displayName.setValue("Placeholder");
+        user = new MutableLiveData<>();
 
-        // Get and set profile picture uri from DB here
+        Pickup pickup = getApplication();
+
+        ApiClient.getInstance(pickup).getMyUser(pickup.getJwt(), new ApiResult.Listener<User>() {
+            @Override
+            public void onResponse(ApiResult<User> response) {
+                user.setValue(response.getData());
+            }
+        });
     }
 
     public ProfileViewModel(Application application) {
@@ -27,12 +33,7 @@ public class ProfileViewModel extends AndroidViewModel {
         initializeUserData();
     }
 
-    public LiveData<String> getDisplayName() {
-        return displayName;
+    public LiveData<User> getUser() {
+        return user;
     }
-
-    public LiveData<Uri> getProfilePicturePath() {
-        return profilePicturePath;
-    }
-
 }
