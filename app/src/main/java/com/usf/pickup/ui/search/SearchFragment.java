@@ -4,11 +4,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.usf.pickup.BottomNav;
@@ -20,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Objects;
+
+import java.util.List;
 
 public class SearchFragment extends Fragment {
     private final String DIALOG_FRAGMENT_TAG = "com.usf.pickup.ui.search.dialog";
@@ -36,6 +42,22 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openFilterOptions();
+            }
+        });
+
+        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
+
+        final Spinner sportSpinner = root.findViewById(R.id.search_spinner);
+
+        searchViewModel.getAvailableSports().observe(this, new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                if(strings != null){
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                            R.layout.spinner_text_color, strings.toArray(new String[0]));
+                    adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+                    sportSpinner.setAdapter(adapter);
+                }
             }
         });
 

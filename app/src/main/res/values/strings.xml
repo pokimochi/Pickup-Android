@@ -58,4 +58,15 @@
         <item>Soccer</item>
         <item>Football</item>
     </string-array>
+    <string name="get_sports_failed">Failed to get the list of supported sports</string>
+    <string name="get_settings_failed">Failed to get user settings</string>
+    <string name="default_players">10</string>
+    <string name="game_description">Description</string>
+    <string name="select_a_location">Tap to select a location…</string>
+    <string name="invalid_game_title">Game titles must be 1 to 140 characters</string>
+    <string name="invalid_game_sport">Select a sport</string>
+    <string name="invalid_game_players">Games must have 2 to 250 players</string>
+    <string name="invalid_game_description">Description must be shorter than 280 characters</string>
+    <string name="invalid_game_location">Select a game location</string>
+    <string name="create_failed">Create Game Failed</string>
 </resources>
