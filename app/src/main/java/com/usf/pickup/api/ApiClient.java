@@ -224,8 +224,8 @@ public class ApiClient {
 
             final JSONObject params = new JSONObject();
             final JSONArray locationArray = new JSONArray();
-            locationArray.put(location.latitude);
             locationArray.put(location.longitude);
+            locationArray.put(location.latitude);
 
             params.put("title", title);
             params.put("sport", sport);
