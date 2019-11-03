@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -18,6 +19,11 @@ import androidx.lifecycle.ViewModelProviders;
 import com.usf.pickup.BottomNav;
 import com.usf.pickup.R;
 import com.usf.pickup.api.models.User;
+import com.usf.pickup.search.SearchAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -42,15 +48,32 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
+        JSONArray mockSearchResults = new JSONArray();
 
-        // Uncomment this once uri's are being set for the profile picture
-//        profileViewModel.getProfilePicturePath().observe(this, new Observer<Uri>() {
-//            @Override
-//            public void onChanged(Uri s) {
-//                profilePicture.setImageURI(s);
-//            }
-//        });
+        for(int i = 0; i < 10; i++) {
+            // Create mock data
+            JSONObject searchEntry = new JSONObject();
+            try {
+                searchEntry.put("host", "John Doe");
+                searchEntry.put("title", "Casual 1-on-1");
+                searchEntry.put("sport", "Tennis");
+                searchEntry.put("currentPlayers", "2");
+                searchEntry.put("totalPlayers", "4");
+                searchEntry.put("location", "Varsity Tennis Court");
+                searchEntry.put("date", "10/31/2019");
+                searchEntry.put("startTime", "10:00 AM");
+                searchEntry.put("endTime", "12:00 PM");
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+            mockSearchResults.put(searchEntry);
+        }
+
+        ListView searchList = root.findViewById(R.id.current_games_list_view);
+        searchList.setDivider(null);
+        searchList.setDividerHeight(0);
+        searchList.setAdapter(new SearchAdapter(root.getContext(), mockSearchResults));
 
         return root;
     }
