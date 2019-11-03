@@ -58,6 +58,7 @@
         <item>Soccer</item>
         <item>Football</item>
     </string-array>
+    <string name="invalid_description">Profile description must be 2 to 60 characters long</string>
     <string name="get_sports_failed">Failed to get the list of supported sports</string>
     <string name="get_settings_failed">Failed to get user settings</string>
     <string name="default_players">10</string>
@@ -69,4 +70,7 @@
     <string name="invalid_game_description">Description must be shorter than 280 characters</string>
     <string name="invalid_game_location">Select a game location</string>
     <string name="create_failed">Create Game Failed</string>
+    <string name="placeholder_display_name">My Display Name</string>
+    <string name="placeholder_profile_description">My Profile Description</string>
+    <string name="edit_btn_desc">Profile description edit</string>
 </resources>

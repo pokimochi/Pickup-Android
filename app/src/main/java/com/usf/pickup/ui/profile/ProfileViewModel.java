@@ -1,19 +1,22 @@
 package com.usf.pickup.ui.profile;
 
 import android.app.Application;
-import android.net.Uri;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.usf.pickup.Pickup;
+import com.usf.pickup.R;
 import com.usf.pickup.api.ApiClient;
 import com.usf.pickup.api.ApiResult;
 import com.usf.pickup.api.models.User;
 
+import java.util.regex.Pattern;
+
 public class ProfileViewModel extends AndroidViewModel {
     private MutableLiveData<User> user;
+    private MutableLiveData<ProfileFormState> profileFormState = new MutableLiveData<>();
 
     private void initializeUserData() {
         user = new MutableLiveData<>();
@@ -35,5 +38,32 @@ public class ProfileViewModel extends AndroidViewModel {
 
     public LiveData<User> getUser() {
         return user;
+    }
+
+    public void profileDataChanged(String displayName, String description){
+        ProfileFormState profile = new ProfileFormState();
+
+        if (!isDisplayNameValid(displayName)) {
+            profile.setNameError(R.string.invalid_display_name);
+        }
+
+        if (!isDescriptionValid(description)) {
+            profile.setDescriptionError(R.string.invalid_description);
+        }
+
+        profileFormState.setValue(profile);
+    }
+
+    private boolean isDisplayNameValid(String displayName) {
+        return displayName != null && displayName.length() >= 2 && displayName.length() <= 30 &&
+                Pattern.matches("^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$", displayName);
+    }
+
+    private boolean isDescriptionValid(String description) {
+        return description != null && description.length() <= 258;
+    }
+
+    public MutableLiveData<ProfileFormState> getProfileFormState() {
+        return profileFormState;
     }
 }
