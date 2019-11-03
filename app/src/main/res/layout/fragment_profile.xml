@@ -7,33 +7,27 @@
 
     <TextView
         android:id="@+id/current_games_label"
-        android:layout_width="348dp"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="25dp"
         android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="264dp"
         android:text="@string/title_current_games"
         android:textColor="#000000"
         android:textSize="33sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/display_name" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_description" />
 
     <ImageView
         android:id="@+id/profile_pic"
         android:layout_width="117dp"
         android:layout_height="142dp"
         android:layout_marginStart="141dp"
-        android:layout_marginLeft="141dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="141dp"
-        android:layout_marginRight="141dp"
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/display_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,37 +36,67 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_gymnast"
         tools:src="@drawable/ic_gymnast"
-        tools:visibility="visible" />
+        tools:visibility="visible"
+        android:contentDescription="@string/title_profile" />
 
-    <TextView
+    <EditText
         android:id="@+id/display_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="404dp"
-        android:text="Display Name"
+        android:layout_height="45dp"
+        android:layout_marginTop="10dp"
+        android:background="@null"
+        android:text="@string/placeholder_display_name"
+        android:inputType="textPersonName"
         android:textAlignment="center"
         android:textColor="#000000"
+        android:maxLines="1"
         android:textSize="33sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_pic" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_pic"
+        android:importantForAutofill="no"
+        tools:ignore="LabelFor" />
 
-    <TextView
-        android:id="@+id/textView4"
+    <EditText
+        android:id="@+id/profile_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="177dp"
-        android:layout_marginLeft="177dp"
-        android:layout_marginEnd="176dp"
-        android:layout_marginRight="176dp"
-        android:layout_marginBottom="73dp"
-        android:text="Profile Description"
-        app:layout_constraintBottom_toTopOf="@+id/current_games_label"
+        android:layout_marginStart="78dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="78dp"
+        android:background="@null"
+        android:gravity="center"
+        android:inputType="text"
+        android:text="@string/placeholder_profile_description"
+        android:maxLines="1"
+        android:textColor="@color/quantum_black_secondary_text"
+        android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/display_name" />
+        app:layout_constraintTop_toBottomOf="@+id/display_name"
+        android:importantForAutofill="no"
+        tools:ignore="LabelFor" />
+
+    <ListView
+        android:id="@+id/current_games_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_games_label" />
+
+    <ImageButton
+        android:id="@+id/edit_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#17000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_edit_black_24dp"
+        android:contentDescription="@string/edit_btn_desc" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
