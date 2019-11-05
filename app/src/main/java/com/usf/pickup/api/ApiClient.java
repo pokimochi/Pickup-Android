@@ -263,4 +263,48 @@ public class ApiClient {
         } catch (JSONException ignored) {
         }
     }
+
+    public void search(final String jwt, String sport, Integer maxDistance, LatLng latLng, boolean hideFull, boolean hideOngoing, Calendar startsBy, final ApiResult.Listener<Game[]> listener){
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.game_search);
+
+            final JSONObject params = new JSONObject();
+            final JSONArray locationArray = new JSONArray();
+            locationArray.put(latLng.longitude);
+            locationArray.put(latLng.latitude);
+
+            params.put("sport", sport);
+            params.put("maxDistance", maxDistance);
+            params.put("location", locationArray);
+            params.put("hideFull", hideFull);
+            params.put("hideOngoing", hideOngoing);
+            params.put("startsBy", startsBy.getTimeInMillis());
+
+            GsonRequest<Game[]> gsonRequest = new GsonRequest<>(Request.Method.POST, url, Game[].class, params, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<Game[]>() {
+                @Override
+                public void onResponse(Game[] response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<Game[]>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<Game[]>Error(ctx.getString(R.string.create_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (JSONException ignored) {
+        }
+    }
 }

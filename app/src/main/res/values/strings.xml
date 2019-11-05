@@ -73,4 +73,5 @@
     <string name="placeholder_display_name">My Display Name</string>
     <string name="placeholder_profile_description">My Profile Description</string>
     <string name="edit_btn_desc">Profile description edit</string>
+    <string name="location_button_description">Location Button</string>
 </resources>

@@ -68,12 +68,16 @@ public class CreateViewModel extends AndroidViewModel {
         });
 
         selectedDate.setValue(Calendar.getInstance());
-        selectedStartTime.setValue(Calendar.getInstance());
 
-        // Default end time of 1 hour after now
+        // Default start time of 1 hour after now
+        Calendar start = Calendar.getInstance();
+        start.add(Calendar.HOUR_OF_DAY, 1);
+
+        // Default end time of 2 hours after now
         Calendar end = Calendar.getInstance();
-        end.add(Calendar.HOUR_OF_DAY, 1);
+        end.add(Calendar.HOUR_OF_DAY, 2);
 
+        selectedStartTime.setValue(start);
         selectedEndTime.setValue(end);
     }
 
