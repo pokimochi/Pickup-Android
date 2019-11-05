@@ -1,4 +1,4 @@
-package com.usf.pickup.search;
+package com.usf.pickup.ui.search;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.usf.pickup.R;
+import com.usf.pickup.api.models.Game;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,17 +20,22 @@ import org.json.JSONException;
 public class SearchAdapter extends BaseAdapter {
 
     private Context context;
-    private JSONArray searchResults;
+    private Game[] searchResults;
     private static LayoutInflater inflater = null;
 
-    public SearchAdapter(Context context, JSONArray searchResults) {
+    public SearchAdapter(Context context) {
         this.context = context;
+        this.searchResults = new Game[]{};
+    }
+
+    public void updateResults(Game[] searchResults){
         this.searchResults = searchResults;
+        notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return searchResults.length();
+        return searchResults.length;
     }
 
     @Override
@@ -58,24 +64,19 @@ public class SearchAdapter extends BaseAdapter {
         TextView playerCount = row.findViewById(R.id.result_players);
         ImageButton infoBtn = row.findViewById(R.id.add_game_btn);
 
-        try {
-            JSONObject entry = searchResults.getJSONObject(i);
+        Game entry = searchResults[i];
 //            I'm not sure how the image will be stored
 //            avatar.setImageResource(searchResults.getJSONObject(i).getString("avatar"));
-            gameTitle.setText(entry.getString("title"));
-            location.setText(entry.getString("location"));
-            String playerCountText = '(' + entry.getString("currentPlayers") + '/' + entry.getString("totalPlayers") + " Players)" ;
-            playerCount.setText(playerCountText);
-            infoBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+        gameTitle.setText(entry.getTitle());
+        location.setText(entry.getLocationName());
+        String playerCountText = '(' + entry.getPlayerCount().toString() + '/' + entry.getNumberOfPlayers() + " Players)" ;
+        playerCount.setText(playerCountText);
+        infoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-                }
-            });
-        }
-        catch (JSONException e) {
-            e.printStackTrace();
-        }
+            }
+        });
 
         return row;
     }
