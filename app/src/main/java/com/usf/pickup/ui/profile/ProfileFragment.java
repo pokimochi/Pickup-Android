@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 import com.usf.pickup.BottomNav;
 import com.usf.pickup.R;
 import com.usf.pickup.api.models.User;
-import com.usf.pickup.search.SearchAdapter;
+import com.usf.pickup.ui.search.SearchAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,7 +121,7 @@ public class ProfileFragment extends Fragment {
 
         searchList.setDivider(null);
         searchList.setDividerHeight(0);
-        searchList.setAdapter(new SearchAdapter(root.getContext(), mockSearchResults));
+        searchList.setAdapter(new SearchAdapter(root.getContext()));
 
         editBtn.setOnClickListener(new View.OnClickListener() {
 
