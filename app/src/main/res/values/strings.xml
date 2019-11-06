@@ -16,6 +16,8 @@
     <string name="invalid_confirm_password">Passwords do not match</string>
     <string name="login_failed">Login failed</string>
     <string name="register_failed">Registration failed</string>
+    <string name="update_desc_failed">Description update failed</string>
+    <string name="update_name_failed">Profile name update failed</string>
     <string name="title_activity_bottom_nav">BottomNav</string>
     <string name="title_create">Create Games</string>
     <string name="title_search_games">Search Games</string>
@@ -70,6 +72,7 @@
     <string name="invalid_game_description">Description must be shorter than 280 characters</string>
     <string name="invalid_game_location">Select a game location</string>
     <string name="create_failed">Create Game Failed</string>
+    <string name="current_games_failed">Failed to find your current games</string>
     <string name="placeholder_display_name">My Display Name</string>
     <string name="placeholder_profile_description">My Profile Description</string>
     <string name="edit_btn_desc">Profile description edit</string>

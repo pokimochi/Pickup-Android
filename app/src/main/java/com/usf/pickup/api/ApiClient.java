@@ -1,6 +1,7 @@
 package com.usf.pickup.api;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 import com.usf.pickup.R;
 import com.usf.pickup.api.models.Game;
+import com.usf.pickup.api.models.MyGames;
 import com.usf.pickup.api.models.User;
 
 import org.json.JSONException;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -291,11 +294,11 @@ public class ApiClient {
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
-                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                             listener.onResponse(ApiResult.<Game[]>Error(response.getString("message")));
                             return;
-                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        } catch (JSONException ignored) {
                         }
                     }
 
@@ -306,5 +309,109 @@ public class ApiClient {
             addToRequestQueue(gsonRequest);
         } catch (JSONException ignored) {
         }
+    }
+
+    public void updateDisplayName(String jwt, String profileDescription, final ApiResult.Listener<User> listener) {
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.display_name);
+
+            final JSONObject params = new JSONObject();
+            params.put("displayName", profileDescription);
+
+            GsonRequest<User> gsonRequest = new GsonRequest<>(Request.Method.PUT, url, User.class, params, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<User>() {
+                @Override
+                public void onResponse(User response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<User>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<User>Error(ctx.getString(R.string.update_name_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (JSONException ignored) {
+        }
+    }
+
+    public void updateProfileDescription(String jwt, String profileDescription, final ApiResult.Listener<User> listener) {
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.profil_desc);
+
+            final JSONObject params = new JSONObject();
+            params.put("profileDescription", profileDescription);
+
+            GsonRequest<User> gsonRequest = new GsonRequest<>(Request.Method.PUT, url, User.class, params, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<User>() {
+                @Override
+                public void onResponse(User response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<User>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<User>Error(ctx.getString(R.string.update_desc_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (JSONException ignored) {
+        }
+    }
+
+    public void getMyGames(final String jwt, final ApiResult.Listener<MyGames> listener){
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.game);
+
+            GsonRequest<MyGames> gsonRequest = new GsonRequest<>(Request.Method.GET, url, MyGames.class, null, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<MyGames>() {
+                @Override
+                public void onResponse(MyGames response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<MyGames>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<MyGames>Error(ctx.getString(R.string.current_games_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 }
