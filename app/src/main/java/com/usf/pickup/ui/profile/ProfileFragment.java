@@ -18,15 +18,14 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.usf.pickup.BottomNav;
 import com.usf.pickup.R;
-import com.usf.pickup.api.ApiClient;
+import com.usf.pickup.api.ApiResult;
+import com.usf.pickup.api.models.Game;
+import com.usf.pickup.api.models.MyGames;
 import com.usf.pickup.api.models.User;
 import com.usf.pickup.ui.search.SearchAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Objects;
 
@@ -34,6 +33,7 @@ public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
     private boolean editMode;
+    private SearchAdapter gamesAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -44,31 +44,20 @@ public class ProfileFragment extends Fragment {
         final EditText profileName = root.findViewById(R.id.display_name);
         final EditText profileDesc = root.findViewById(R.id.profile_description);
         final ImageButton editBtn = root.findViewById(R.id.edit_btn);
-        final ListView searchList = root.findViewById(R.id.current_games_list_view);
+        final ListView myGamesList = root.findViewById(R.id.current_games_list_view);
+
+        profileViewModel.searchMyGames();
+
+        gamesAdapter = new SearchAdapter(root.getContext());
+        profileViewModel.getMyGames().observe(this, new Observer<ApiResult<MyGames>>() {
+
+            @Override
+            public void onChanged(ApiResult<MyGames> apiResult) {
+                gamesAdapter.updateResults(ArrayUtils.concat(apiResult.getData().getGames(), apiResult.getData().getOrganizedGames()));
+            }
+        });
 
         editMode = false;
-
-        final JSONArray mockSearchResults = new JSONArray();
-
-        for(int i = 0; i < 10; i++) {
-            // Create mock data
-            JSONObject searchEntry = new JSONObject();
-            try {
-                searchEntry.put("host", "John Doe");
-                searchEntry.put("title", "Casual 1-on-1");
-                searchEntry.put("sport", "Tennis");
-                searchEntry.put("currentPlayers", "2");
-                searchEntry.put("totalPlayers", "4");
-                searchEntry.put("location", "Varsity Tennis Court");
-                searchEntry.put("date", "10/31/2019");
-                searchEntry.put("startTime", "10:00 AM");
-                searchEntry.put("endTime", "12:00 PM");
-            }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-            mockSearchResults.put(searchEntry);
-        }
 
         profileName.setEnabled(false);
         profileDesc.setEnabled(false);
@@ -123,9 +112,9 @@ public class ProfileFragment extends Fragment {
         profileName.addTextChangedListener(afterTextChangedListener);
         profileDesc.addTextChangedListener(afterTextChangedListener);
 
-        searchList.setDivider(null);
-        searchList.setDividerHeight(0);
-        searchList.setAdapter(new SearchAdapter(root.getContext()));
+        myGamesList.setDivider(null);
+        myGamesList.setDividerHeight(0);
+        myGamesList.setAdapter(gamesAdapter);
 
         editBtn.setOnClickListener(new View.OnClickListener() {
 

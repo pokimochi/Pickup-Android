@@ -1,6 +1,7 @@
 package com.usf.pickup.api;
 
 import android.content.Context;
+import android.content.res.Resources;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -14,6 +15,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
 import com.usf.pickup.R;
 import com.usf.pickup.api.models.Game;
+import com.usf.pickup.api.models.MyGames;
 import com.usf.pickup.api.models.User;
 
 import org.json.JSONException;
@@ -377,5 +379,39 @@ public class ApiClient {
             addToRequestQueue(gsonRequest);
         } catch (JSONException ignored) {
         }
+    }
+
+    public void getMyGames(final String jwt, final ApiResult.Listener<MyGames> listener){
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.game);
+
+            GsonRequest<MyGames> gsonRequest = new GsonRequest<>(Request.Method.GET, url, MyGames.class, null, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<MyGames>() {
+                @Override
+                public void onResponse(MyGames response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<MyGames>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<MyGames>Error(ctx.getString(R.string.current_games_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 }
