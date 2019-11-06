@@ -60,7 +60,29 @@ public class ProfileViewModel extends AndroidViewModel {
     }
 
     private boolean isDescriptionValid(String description) {
-        return description != null && description.length() <= 258;
+        return description != null && description.length() >= 1 && description.length() <= 258;
+    }
+
+    public void updateDisplayName(String displayName) {
+        Pickup pickup = getApplication();
+
+        ApiClient.getInstance(pickup).updateDisplayName(pickup.getJwt(), displayName, new ApiResult.Listener<User>() {
+            @Override
+            public void onResponse(ApiResult<User> response) {
+                user.setValue(response.getData());
+            }
+        });
+    }
+
+    public void updateProfileDescription(String profileDescription) {
+        Pickup pickup = getApplication();
+
+        ApiClient.getInstance(pickup).updateProfileDescription(pickup.getJwt(), profileDescription, new ApiResult.Listener<User>() {
+            @Override
+            public void onResponse(ApiResult<User> response) {
+                user.setValue(response.getData());
+            }
+        });
     }
 
     public MutableLiveData<ProfileFormState> getProfileFormState() {

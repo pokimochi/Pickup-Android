@@ -16,6 +16,8 @@
     <string name="invalid_confirm_password">Passwords do not match</string>
     <string name="login_failed">Login failed</string>
     <string name="register_failed">Registration failed</string>
+    <string name="update_desc_failed">Description update failed</string>
+    <string name="update_name_failed">Profile name update failed</string>
     <string name="title_activity_bottom_nav">BottomNav</string>
     <string name="title_create">Create Games</string>
     <string name="title_search_games">Search Games</string>
