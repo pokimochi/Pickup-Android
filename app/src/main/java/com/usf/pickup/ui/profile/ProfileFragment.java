@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -17,21 +18,22 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.common.util.ArrayUtils;
 import com.usf.pickup.BottomNav;
 import com.usf.pickup.R;
+import com.usf.pickup.api.ApiResult;
+import com.usf.pickup.api.models.Game;
+import com.usf.pickup.api.models.MyGames;
 import com.usf.pickup.api.models.User;
 import com.usf.pickup.ui.search.SearchAdapter;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.Objects;
 
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
-    private boolean editMode = false;
+    private boolean editMode;
+    private SearchAdapter gamesAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -42,29 +44,20 @@ public class ProfileFragment extends Fragment {
         final EditText profileName = root.findViewById(R.id.display_name);
         final EditText profileDesc = root.findViewById(R.id.profile_description);
         final ImageButton editBtn = root.findViewById(R.id.edit_btn);
-        final ListView searchList = root.findViewById(R.id.current_games_list_view);
+        final ListView myGamesList = root.findViewById(R.id.current_games_list_view);
 
-        final JSONArray mockSearchResults = new JSONArray();
+        profileViewModel.searchMyGames();
 
-        for(int i = 0; i < 10; i++) {
-            // Create mock data
-            JSONObject searchEntry = new JSONObject();
-            try {
-                searchEntry.put("host", "John Doe");
-                searchEntry.put("title", "Casual 1-on-1");
-                searchEntry.put("sport", "Tennis");
-                searchEntry.put("currentPlayers", "2");
-                searchEntry.put("totalPlayers", "4");
-                searchEntry.put("location", "Varsity Tennis Court");
-                searchEntry.put("date", "10/31/2019");
-                searchEntry.put("startTime", "10:00 AM");
-                searchEntry.put("endTime", "12:00 PM");
+        gamesAdapter = new SearchAdapter(root.getContext());
+        profileViewModel.getMyGames().observe(this, new Observer<ApiResult<MyGames>>() {
+
+            @Override
+            public void onChanged(ApiResult<MyGames> apiResult) {
+                gamesAdapter.updateResults(ArrayUtils.concat(apiResult.getData().getGames(), apiResult.getData().getOrganizedGames()));
             }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
-            mockSearchResults.put(searchEntry);
-        }
+        });
+
+        editMode = false;
 
         profileName.setEnabled(false);
         profileDesc.setEnabled(false);
@@ -95,6 +88,7 @@ public class ProfileFragment extends Fragment {
             public void onChanged(@Nullable User user) {
                 if (user != null){
                     profileName.setText(user.getDisplayName());
+                    profileDesc.setText(user.getProfileDescription());
                 }
             }
         });
@@ -115,27 +109,30 @@ public class ProfileFragment extends Fragment {
                 profileViewModel.profileDataChanged(profileName.getText().toString(), profileDesc.getText().toString());
             }
         };
-
         profileName.addTextChangedListener(afterTextChangedListener);
         profileDesc.addTextChangedListener(afterTextChangedListener);
 
-        searchList.setDivider(null);
-        searchList.setDividerHeight(0);
-        searchList.setAdapter(new SearchAdapter(root.getContext()));
+        myGamesList.setDivider(null);
+        myGamesList.setDividerHeight(0);
+        myGamesList.setAdapter(gamesAdapter);
 
         editBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
                 if(editMode) {
-                    editBtn.setImageResource(R.drawable.ic_done_black_24dp);
-                    profileName.setEnabled(true);
-                    profileDesc.setEnabled(true);
-                }
-                else {
+                    profileViewModel.updateDisplayName(profileName.getText().toString());
+                    profileViewModel.updateProfileDescription(profileDesc.getText().toString());
+                    Toast.makeText(getContext(), "Profile changes saved!", Toast.LENGTH_SHORT).show();
                     editBtn.setImageResource(R.drawable.ic_edit_black_24dp);
                     profileName.setEnabled(false);
                     profileDesc.setEnabled(false);
+
+                }
+                else {
+                    editBtn.setImageResource(R.drawable.ic_done_black_24dp);
+                    profileName.setEnabled(true);
+                    profileDesc.setEnabled(true);
                 }
 
                 editMode = !editMode;
