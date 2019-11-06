@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.usf.pickup.BottomNav;
 import com.usf.pickup.R;
+import com.usf.pickup.api.ApiClient;
 import com.usf.pickup.api.models.User;
 import com.usf.pickup.ui.search.SearchAdapter;
 
@@ -31,7 +33,7 @@ import java.util.Objects;
 public class ProfileFragment extends Fragment {
 
     private ProfileViewModel profileViewModel;
-    private boolean editMode = false;
+    private boolean editMode;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,6 +45,8 @@ public class ProfileFragment extends Fragment {
         final EditText profileDesc = root.findViewById(R.id.profile_description);
         final ImageButton editBtn = root.findViewById(R.id.edit_btn);
         final ListView searchList = root.findViewById(R.id.current_games_list_view);
+
+        editMode = false;
 
         final JSONArray mockSearchResults = new JSONArray();
 
@@ -95,6 +99,7 @@ public class ProfileFragment extends Fragment {
             public void onChanged(@Nullable User user) {
                 if (user != null){
                     profileName.setText(user.getDisplayName());
+                    profileDesc.setText(user.getProfileDescription());
                 }
             }
         });
@@ -115,7 +120,6 @@ public class ProfileFragment extends Fragment {
                 profileViewModel.profileDataChanged(profileName.getText().toString(), profileDesc.getText().toString());
             }
         };
-
         profileName.addTextChangedListener(afterTextChangedListener);
         profileDesc.addTextChangedListener(afterTextChangedListener);
 
@@ -128,14 +132,18 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if(editMode) {
-                    editBtn.setImageResource(R.drawable.ic_done_black_24dp);
-                    profileName.setEnabled(true);
-                    profileDesc.setEnabled(true);
-                }
-                else {
+                    profileViewModel.updateDisplayName(profileName.getText().toString());
+                    profileViewModel.updateProfileDescription(profileDesc.getText().toString());
+                    Toast.makeText(getContext(), "Profile changes saved!", Toast.LENGTH_SHORT).show();
                     editBtn.setImageResource(R.drawable.ic_edit_black_24dp);
                     profileName.setEnabled(false);
                     profileDesc.setEnabled(false);
+
+                }
+                else {
+                    editBtn.setImageResource(R.drawable.ic_done_black_24dp);
+                    profileName.setEnabled(true);
+                    profileDesc.setEnabled(true);
                 }
 
                 editMode = !editMode;

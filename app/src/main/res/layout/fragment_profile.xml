@@ -93,10 +93,10 @@
         android:id="@+id/edit_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#17000000"
+        android:backgroundTint="#17FFFFFF"
+        android:contentDescription="@string/edit_btn_desc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_edit_black_24dp"
-        android:contentDescription="@string/edit_btn_desc" />
+        app:srcCompat="@drawable/ic_edit_black_24dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

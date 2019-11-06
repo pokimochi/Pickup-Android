@@ -21,6 +21,7 @@ import org.json.JSONObject;
 import org.json.JSONArray;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -291,15 +292,85 @@ public class ApiClient {
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
-                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                             listener.onResponse(ApiResult.<Game[]>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<Game[]>Error(ctx.getString(R.string.create_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (JSONException ignored) {
+        }
+    }
+
+    public void updateDisplayName(String jwt, String profileDescription, final ApiResult.Listener<User> listener) {
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.display_name);
+
+            final JSONObject params = new JSONObject();
+            params.put("displayName", profileDescription);
+
+            GsonRequest<User> gsonRequest = new GsonRequest<>(Request.Method.PUT, url, User.class, params, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<User>() {
+                @Override
+                public void onResponse(User response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<User>Error(response.getString("message")));
                             return;
                         } catch (JSONException | UnsupportedEncodingException ignored) {
                         }
                     }
 
-                    listener.onResponse(ApiResult.<Game[]>Error(ctx.getString(R.string.create_failed)));
+                    listener.onResponse(ApiResult.<User>Error(ctx.getString(R.string.update_name_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (JSONException ignored) {
+        }
+    }
+
+    public void updateProfileDescription(String jwt, String profileDescription, final ApiResult.Listener<User> listener) {
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.profil_desc);
+
+            final JSONObject params = new JSONObject();
+            params.put("profileDescription", profileDescription);
+
+            GsonRequest<User> gsonRequest = new GsonRequest<>(Request.Method.PUT, url, User.class, params, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<User>() {
+                @Override
+                public void onResponse(User response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                            listener.onResponse(ApiResult.<User>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<User>Error(ctx.getString(R.string.update_desc_failed)));
                 }
             });
 

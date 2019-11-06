@@ -6,6 +6,7 @@ public class User {
     private String _id;
     private String email;
     private String displayName;
+    private String profileDescription;
     private Date createdAt;
     private Date updatedAt;
 
@@ -31,4 +32,6 @@ public class User {
     public Date getUpdatedAt() {
         return updatedAt;
     }
+
+    public String getProfileDescription() {return profileDescription;}
 }
