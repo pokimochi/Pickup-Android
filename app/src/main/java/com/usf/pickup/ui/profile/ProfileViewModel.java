@@ -10,6 +10,8 @@ import com.usf.pickup.Pickup;
 import com.usf.pickup.R;
 import com.usf.pickup.api.ApiClient;
 import com.usf.pickup.api.ApiResult;
+import com.usf.pickup.api.models.Game;
+import com.usf.pickup.api.models.MyGames;
 import com.usf.pickup.api.models.User;
 
 import java.util.regex.Pattern;
@@ -17,6 +19,7 @@ import java.util.regex.Pattern;
 public class ProfileViewModel extends AndroidViewModel {
     private MutableLiveData<User> user;
     private MutableLiveData<ProfileFormState> profileFormState = new MutableLiveData<>();
+    private MutableLiveData<ApiResult<MyGames>> myGames = new MutableLiveData<>();
 
     private void initializeUserData() {
         user = new MutableLiveData<>();
@@ -83,6 +86,21 @@ public class ProfileViewModel extends AndroidViewModel {
                 user.setValue(response.getData());
             }
         });
+    }
+
+    public void searchMyGames() {
+        Pickup pickup = getApplication();
+
+        ApiClient.getInstance(pickup).getMyGames(pickup.getJwt(), new ApiResult.Listener<MyGames>() {
+            @Override
+            public void onResponse(ApiResult<MyGames> response) {
+                myGames.setValue(response);
+            }
+        });
+    }
+
+    public MutableLiveData<ApiResult<MyGames>> getMyGames() {
+        return myGames;
     }
 
     public MutableLiveData<ProfileFormState> getProfileFormState() {
