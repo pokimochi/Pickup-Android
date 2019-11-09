@@ -169,13 +169,13 @@ public class ProfileFragment extends Fragment {
 
                 }
                 else {
-                    showValidation(profileViewModel.getProfileFormState().getValue());
                     editBtn.setImageResource(R.drawable.ic_done_black_24dp);
                     profileName.setEnabled(true);
                     profileDesc.setEnabled(true);
                 }
 
                 editMode = !editMode;
+                showValidation(profileViewModel.getProfileFormState().getValue());
             }
         });
 

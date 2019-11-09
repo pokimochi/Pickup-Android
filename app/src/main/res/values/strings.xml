@@ -60,7 +60,7 @@
         <item>Soccer</item>
         <item>Football</item>
     </string-array>
-    <string name="invalid_description">Profile description must be 2 to 60 characters long</string>
+    <string name="invalid_description">Profile description must be 1 to 280 characters long</string>
     <string name="get_sports_failed">Failed to get the list of supported sports</string>
     <string name="get_settings_failed">Failed to get user settings</string>
     <string name="default_players">10</string>
