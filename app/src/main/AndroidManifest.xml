@@ -30,14 +30,19 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <activity
+            android:screenOrientation="portrait"
             android:name=".ForgetPassword"
             android:label="@string/title_activity_forget_password" />
-        <activity android:name=".ui.register.RegisterActivity"
+        <activity
+            android:screenOrientation="portrait"
+            android:name=".ui.register.RegisterActivity"
             android:label="@string/title_activity_register" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".BottomNav"
             android:label="@string/title_activity_bottom_nav" />
         <activity
+            android:screenOrientation="portrait"
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity"
             android:theme="@style/AppTheme.NoActionBar">

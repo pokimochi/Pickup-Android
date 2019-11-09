@@ -1,5 +1,6 @@
 package com.usf.pickup.ui.search;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.squareup.picasso.Picasso;
+import com.usf.pickup.DetailBottomSheetDialogFragment;
 import com.usf.pickup.R;
 import com.usf.pickup.api.models.Game;
 import com.usf.pickup.api.models.User;
@@ -19,9 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import java.util.Objects;
+
 
 public class SearchAdapter extends BaseAdapter {
-
+    private final String DIALOG_FRAGMENT_TAG = "com.usf.pickup.ui.search.detail";
     private Context context;
     private Game[] searchResults;
     private static LayoutInflater inflater = null;
@@ -67,7 +73,7 @@ public class SearchAdapter extends BaseAdapter {
         TextView playerCount = row.findViewById(R.id.result_players);
         ImageButton infoBtn = row.findViewById(R.id.add_game_btn);
 
-        Game entry = searchResults[i];
+        final Game entry = searchResults[i];
         User user = entry.getOrganizer();
         if(user.getProfilePicture() != null && !user.getProfilePicture().isEmpty()){
             Picasso.get().load(context.getString(R.string.api_url) +
@@ -85,6 +91,14 @@ public class SearchAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
 
+            }
+        });
+
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DetailBottomSheetDialogFragment detailBottomSheetDialogFragment = new DetailBottomSheetDialogFragment(entry);
+                detailBottomSheetDialogFragment.show(((FragmentActivity) context).getSupportFragmentManager(), DIALOG_FRAGMENT_TAG);
             }
         });
 
