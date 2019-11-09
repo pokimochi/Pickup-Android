@@ -13,6 +13,7 @@ public class Game {
     private String description;
     private Date startTime;
     private Date endTime;
+    private User organizer;
     private String[] users;
 
     public String getTitle() {
@@ -52,4 +53,8 @@ public class Game {
     }
 
     public Integer getPlayerCount() {return users.length + 1;}
+
+    public User getOrganizer() {
+        return organizer;
+    }
 }

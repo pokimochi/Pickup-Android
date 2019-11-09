@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="places_api_key">AIzaSyB2gnNxEwxMlwtpR6tvh4lzI0jeY5UO4Ac</string>
-    <string name="api_url">http://192.168.254.20:8080/api</string>
+    <string name="api_url">http://192.168.1.20:8080/api</string>
+    <string name="static_files">/static</string>
     <string name="auth_login">/auth/login</string>
     <string name="auth_register">/auth/register</string>
     <string name="settings">/settings</string>
@@ -10,4 +11,5 @@
     <string name="game_sports">/game/sports</string>
     <string name="display_name">/settings/display-name</string>
     <string name="profil_desc">/settings/profile-description</string>
+    <string name="profil_pic">/settings/profile-picture</string>
 </resources>

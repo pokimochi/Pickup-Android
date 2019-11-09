@@ -9,6 +9,7 @@ public class User {
     private String profileDescription;
     private Date createdAt;
     private Date updatedAt;
+    private String profilePicture;
 
     public User() {
     }
@@ -34,4 +35,20 @@ public class User {
     }
 
     public String getProfileDescription() {return profileDescription;}
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setProfileDescription(String profileDescription) {
+        this.profileDescription = profileDescription;
+    }
 }
