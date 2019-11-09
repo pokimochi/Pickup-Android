@@ -2,6 +2,7 @@ package com.usf.pickup.api;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -22,6 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -412,6 +415,34 @@ public class ApiClient {
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();
         }
+    }
 
+    public void uploadProfilePicture(final String jwt, final byte[] image, final ApiResult.Listener<User> listener){
+        String url = ctx.getResources().getString(R.string.api_url) +
+                ctx.getResources().getString(R.string.profil_pic);
+
+        ProfilePictureUploadRequest profilePictureUploadRequest = new ProfilePictureUploadRequest(url, image, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<User>() {
+            @Override
+            public void onResponse(User response) {
+                listener.onResponse(ApiResult.Success(response));
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                if(error.networkResponse != null && error.networkResponse.data != null){
+                    try {
+                        JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+
+                        listener.onResponse(ApiResult.<User>Error(response.getString("message")));
+                        return;
+                    } catch (JSONException | UnsupportedEncodingException ignored) {
+                    }
+                }
+
+                listener.onResponse(ApiResult.<User>Error(ctx.getString(R.string.current_games_failed)));
+            }
+        });
+
+        addToRequestQueue(profilePictureUploadRequest);
     }
 }

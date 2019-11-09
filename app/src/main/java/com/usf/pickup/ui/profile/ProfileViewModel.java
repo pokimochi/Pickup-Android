@@ -1,6 +1,7 @@
 package com.usf.pickup.ui.profile;
 
 import android.app.Application;
+import android.graphics.Bitmap;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
@@ -72,7 +73,10 @@ public class ProfileViewModel extends AndroidViewModel {
         ApiClient.getInstance(pickup).updateDisplayName(pickup.getJwt(), displayName, new ApiResult.Listener<User>() {
             @Override
             public void onResponse(ApiResult<User> response) {
-                user.setValue(response.getData());
+                User u = user.getValue() != null ? user.getValue() : response.getData();
+                u.setDisplayName(response.getData().getDisplayName());
+
+                user.setValue(u);
             }
         });
     }
@@ -83,7 +87,24 @@ public class ProfileViewModel extends AndroidViewModel {
         ApiClient.getInstance(pickup).updateProfileDescription(pickup.getJwt(), profileDescription, new ApiResult.Listener<User>() {
             @Override
             public void onResponse(ApiResult<User> response) {
-                user.setValue(response.getData());
+                User u = user.getValue() != null ? user.getValue() : response.getData();
+                u.setProfileDescription(response.getData().getProfileDescription());
+
+                user.setValue(u);
+            }
+        });
+    }
+
+    public void updateProfilePicture(byte[] image) {
+        Pickup pickup = getApplication();
+
+        ApiClient.getInstance(pickup).uploadProfilePicture(pickup.getJwt(), image, new ApiResult.Listener<User>() {
+            @Override
+            public void onResponse(ApiResult<User> response) {
+                User u = user.getValue() != null ? user.getValue() : response.getData();
+                u.setProfilePicture(response.getData().getProfilePicture());
+
+                user.setValue(u);
             }
         });
     }

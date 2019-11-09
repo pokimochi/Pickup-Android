@@ -9,8 +9,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
 import com.usf.pickup.R;
 import com.usf.pickup.api.models.Game;
+import com.usf.pickup.api.models.User;
+import com.usf.pickup.helpers.RoundedCornersTransform;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -65,8 +68,15 @@ public class SearchAdapter extends BaseAdapter {
         ImageButton infoBtn = row.findViewById(R.id.add_game_btn);
 
         Game entry = searchResults[i];
-//            I'm not sure how the image will be stored
-//            avatar.setImageResource(searchResults.getJSONObject(i).getString("avatar"));
+        User user = entry.getOrganizer();
+        if(user.getProfilePicture() != null && !user.getProfilePicture().isEmpty()){
+            Picasso.get().load(context.getString(R.string.api_url) +
+                    context.getString(R.string.static_files) + "/" + user.getProfilePicture())
+                    .centerCrop()
+                    .transform(new RoundedCornersTransform(20))
+                    .fit()
+                    .into(avatar);
+        }
         gameTitle.setText(entry.getTitle());
         location.setText(entry.getLocationName());
         String playerCountText = '(' + entry.getPlayerCount().toString() + '/' + entry.getNumberOfPlayers() + " Players)" ;
