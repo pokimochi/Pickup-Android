@@ -64,7 +64,7 @@ public class ProfileViewModel extends AndroidViewModel {
     }
 
     private boolean isDescriptionValid(String description) {
-        return description != null && description.length() >= 1 && description.length() <= 258;
+        return description != null && description.length() >= 1 && description.length() <= 280;
     }
 
     public void updateDisplayName(String displayName) {
