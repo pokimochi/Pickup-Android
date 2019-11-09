@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Game {
+    private String _id;
     private String title;
     private String sport;
     private String numberOfPlayers;
@@ -15,6 +16,9 @@ public class Game {
     private Date endTime;
     private User organizer;
     private String[] users;
+    private boolean hasJoined;
+
+    public String get_id() { return _id; }
 
     public String getTitle() {
         return title;
@@ -57,4 +61,8 @@ public class Game {
     public User getOrganizer() {
         return organizer;
     }
+
+    public boolean isHasJoined() { return hasJoined; }
+
+    public void setHasJoined(boolean hasJoined) { this.hasJoined = hasJoined; }
 }
