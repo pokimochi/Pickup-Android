@@ -2,15 +2,13 @@ package com.usf.pickup.api;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.model.LatLng;
@@ -18,18 +16,17 @@ import com.usf.pickup.R;
 import com.usf.pickup.api.models.Game;
 import com.usf.pickup.api.models.MyGames;
 import com.usf.pickup.api.models.User;
+import com.usf.pickup.api.models.Weather;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONArray;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +47,7 @@ public class ApiClient {
         return instance;
     }
 
-    public RequestQueue getRequestQueue() {
+    private RequestQueue getRequestQueue() {
         if (requestQueue == null) {
             // getApplicationContext() is key, it keeps you from leaking the
             // Activity or BroadcastReceiver if someone passes one in.
@@ -82,11 +79,11 @@ public class ApiClient {
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
-                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                             listener.onResponse(ApiResult.<String>Error(response.getString("message")));
                             return;
-                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        } catch (JSONException ignored) {
                         }
                     }
 
@@ -99,13 +96,8 @@ public class ApiClient {
                 }
 
                 @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return params.toString().getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", params, "utf-8");
-                        return null;
-                    }
+                public byte[] getBody() {
+                    return params.toString().getBytes(StandardCharsets.UTF_8);
                 }
             };
 
@@ -135,11 +127,11 @@ public class ApiClient {
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
-                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                             listener.onResponse(ApiResult.<User>Error(response.getString("message")));
                             return;
-                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        } catch (JSONException ignored) {
                         }
                     }
 
@@ -166,11 +158,11 @@ public class ApiClient {
             public void onErrorResponse(VolleyError error) {
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     try {
-                        JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                        JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                         listener.onResponse(ApiResult.<User>Error(response.getString("message")));
                         return;
-                    } catch (JSONException | UnsupportedEncodingException ignored) {
+                    } catch (JSONException ignored) {
                     }
                 }
 
@@ -203,11 +195,11 @@ public class ApiClient {
             public void onErrorResponse(VolleyError error) {
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     try {
-                        JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                        JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                         listener.onResponse(ApiResult.<List<String>>Error(response.getString("message")));
                         return;
-                    } catch (JSONException | UnsupportedEncodingException ignored) {
+                    } catch (JSONException ignored) {
                     }
                 }
 
@@ -253,11 +245,11 @@ public class ApiClient {
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
-                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                             listener.onResponse(ApiResult.<Game>Error(response.getString("message")));
                             return;
-                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        } catch (JSONException ignored) {
                         }
                     }
 
@@ -305,7 +297,7 @@ public class ApiClient {
                         }
                     }
 
-                    listener.onResponse(ApiResult.<Game[]>Error(ctx.getString(R.string.create_failed)));
+                    listener.onResponse(ApiResult.<Game[]>Error(ctx.getString(R.string.search_failed)));
                 }
             });
 
@@ -332,11 +324,11 @@ public class ApiClient {
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
-                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                             listener.onResponse(ApiResult.<User>Error(response.getString("message")));
                             return;
-                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        } catch (JSONException ignored) {
                         }
                     }
 
@@ -367,11 +359,11 @@ public class ApiClient {
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
-                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                             listener.onResponse(ApiResult.<User>Error(response.getString("message")));
                             return;
-                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        } catch (JSONException ignored) {
                         }
                     }
 
@@ -399,11 +391,11 @@ public class ApiClient {
                 public void onErrorResponse(VolleyError error) {
                     if(error.networkResponse != null && error.networkResponse.data != null){
                         try {
-                            JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                             listener.onResponse(ApiResult.<MyGames>Error(response.getString("message")));
                             return;
-                        } catch (JSONException | UnsupportedEncodingException ignored) {
+                        } catch (JSONException ignored) {
                         }
                     }
 
@@ -431,18 +423,67 @@ public class ApiClient {
             public void onErrorResponse(VolleyError error) {
                 if(error.networkResponse != null && error.networkResponse.data != null){
                     try {
-                        JSONObject response = new JSONObject(new String(error.networkResponse.data, "UTF-8"));
+                        JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
 
                         listener.onResponse(ApiResult.<User>Error(response.getString("message")));
                         return;
-                    } catch (JSONException | UnsupportedEncodingException ignored) {
+                    } catch (JSONException ignored) {
                     }
                 }
 
-                listener.onResponse(ApiResult.<User>Error(ctx.getString(R.string.current_games_failed)));
+                listener.onResponse(ApiResult.<User>Error(ctx.getString(R.string.update_profile_pic_failed)));
             }
         });
 
         addToRequestQueue(profilePictureUploadRequest);
+    }
+
+    public void getWeather(final Game game, final ApiResult.Listener<Weather> listener){
+        String url = ctx.getResources().getString(R.string.weather_api_url) + "?APPID=" +
+                ctx.getResources().getString(R.string.weather_api_key) + "&lat=" +
+                game.getLocation().getCoordinates()[1] + "&lon=" +
+                game.getLocation().getCoordinates()[0] + "&units=imperial";
+
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try {
+                    if(response.getString("cod").equals("200")){
+                        JSONArray array = response.getJSONArray("list");
+                        JSONObject obj = null;
+                        for (int i = 0; i < array.length(); i++){
+                            JSONObject row = array.getJSONObject(i);
+                            Date time = new java.util.Date((long)row.getInt("dt")*1000);
+
+                            if(time.after(game.getStartTime())){
+                                obj = row;
+                                break;
+                            }
+                        }
+
+                        if(obj != null){
+                            Weather weather = new Weather(obj.getJSONObject("main").getDouble("temp"),
+                                    obj.getJSONObject("main").getInt("humidity"),
+                                    obj.getJSONArray("weather").getJSONObject(0).getString("main"));
+
+                            listener.onResponse(ApiResult.Success(weather));
+                        }else {
+                            listener.onResponse(ApiResult.<Weather>Error(ctx.getString(R.string.get_weather_failed)));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    listener.onResponse(ApiResult.<Weather>Error(ctx.getString(R.string.get_weather_failed)));
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                listener.onResponse(ApiResult.<Weather>Error(ctx.getString(R.string.get_weather_failed)));
+            }
+        });
+
+        addToRequestQueue(jsonObjectRequest);
     }
 }
