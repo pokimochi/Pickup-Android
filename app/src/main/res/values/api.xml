@@ -12,4 +12,6 @@
     <string name="display_name">/settings/display-name</string>
     <string name="profil_desc">/settings/profile-description</string>
     <string name="profil_pic">/settings/profile-picture</string>
+    <string name="join_game">/game/join</string>
+    <string name="leave_game">/game/leave</string>
 </resources>

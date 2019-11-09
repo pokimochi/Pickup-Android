@@ -40,6 +40,7 @@ import com.usf.pickup.api.models.Game;
 import com.usf.pickup.api.models.MyGames;
 import com.usf.pickup.api.models.User;
 import com.usf.pickup.helpers.RoundedCornersTransform;
+import com.usf.pickup.ui.search.MyGamesAdapter;
 import com.usf.pickup.ui.search.SearchAdapter;
 
 import java.io.BufferedInputStream;
@@ -80,7 +81,7 @@ public class ProfileFragment extends Fragment {
 
         profileViewModel.searchMyGames();
 
-        gamesAdapter = new SearchAdapter(root.getContext());
+        gamesAdapter = new MyGamesAdapter(root.getContext());
         profileViewModel.getMyGames().observe(this, new Observer<ApiResult<MyGames>>() {
 
             @Override
