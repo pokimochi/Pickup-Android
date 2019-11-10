@@ -12,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.util.ArrayUtils;
+import androidx.fragment.app.FragmentActivity;
+
 import com.squareup.picasso.Picasso;
+import com.usf.pickup.DetailBottomSheetDialogFragment;
 import com.usf.pickup.Pickup;
 import com.usf.pickup.R;
 import com.usf.pickup.api.ApiClient;
@@ -95,6 +97,14 @@ public class MyGamesAdapter extends SearchAdapter {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage(R.string.leave_confirmation).setPositiveButton("Yes", dialogClickListener)
                         .setNegativeButton("No", dialogClickListener).show();
+            }
+        });
+
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DetailBottomSheetDialogFragment detailBottomSheetDialogFragment = new DetailBottomSheetDialogFragment(entry);
+                detailBottomSheetDialogFragment.show(((FragmentActivity) context).getSupportFragmentManager(), DIALOG_FRAGMENT_TAG);
             }
         });
 

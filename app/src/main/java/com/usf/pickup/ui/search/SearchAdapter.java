@@ -1,7 +1,6 @@
 package com.usf.pickup.ui.search;
 
 import android.app.AlertDialog;
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -26,24 +25,24 @@ import com.usf.pickup.api.models.User;
 import com.usf.pickup.helpers.RoundedCornersTransform;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class SearchAdapter extends BaseAdapter {
 
     protected Context context;
-    protected ArrayList<Game> searchResults;
+    protected List<Game> searchResults;
     protected static LayoutInflater inflater = null;
-    private User myUser;
-    private final String DIALOG_FRAGMENT_TAG = "com.usf.pickup.ui.search.detail";
+    protected final String DIALOG_FRAGMENT_TAG = "com.usf.pickup.ui.search.detail";
 
     public SearchAdapter(Context context) {
         this.context = context;
-        this.searchResults = new ArrayList<Game>();
+        this.searchResults = new ArrayList<>();
     }
 
     public void updateResults(Game[] searchResults){
-        Collections.addAll(this.searchResults, searchResults);
+        this.searchResults = new ArrayList<>(Arrays.asList(searchResults));
         notifyDataSetChanged();
     }
 
@@ -79,13 +78,6 @@ public class SearchAdapter extends BaseAdapter {
         final Game entry = searchResults.get(i);
         final User organizer = entry.getOrganizer();
         ImageView avatar = row.findViewById(R.id.avatar);
-
-        ApiClient.getInstance(pickup).getMyUser(pickup.getJwt(), new ApiResult.Listener<User>() {
-            @Override
-            public void onResponse(ApiResult<User> response) {
-                myUser = response.getData();
-            }
-        });
 
         if(organizer.getProfilePicture() != null && !organizer.getProfilePicture().isEmpty()){
             Picasso.get().load(context.getString(R.string.api_url) +
