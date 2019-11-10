@@ -32,37 +32,12 @@ public class MyGamesAdapter extends SearchAdapter {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        View row = view;
-
-        if(row == null) {
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.search_result_layout, null);
-        }
-
-        TextView gameTitle = row.findViewById(R.id.result_title);
-        TextView location = row.findViewById(R.id.result_location);
-        TextView playerCount = row.findViewById(R.id.result_players);
-        final ImageButton infoBtn = row.findViewById(R.id.add_game_btn);
         final Pickup pickup = (Pickup) context.getApplicationContext();
         final Game entry = searchResults.get(i);
-        final User organizer = entry.getOrganizer();
-        ImageView avatar = row.findViewById(R.id.avatar);
 
-        if(organizer.getProfilePicture() != null && !organizer.getProfilePicture().isEmpty()){
-            Picasso.get().load(context.getString(R.string.api_url) +
-                    context.getString(R.string.static_files) + "/" + organizer.getProfilePicture())
-                    .centerCrop()
-                    .transform(new RoundedCornersTransform(20))
-                    .fit()
-                    .into(avatar);
-        }
+        view = drawRow(view, entry);
 
-        gameTitle.setText(entry.getTitle().length() > 25 ? entry.getTitle().substring(0, 22) + "..." : entry.getTitle());
-        location.setText(entry.getLocationName());
-        String playerCountText = '(' + entry.getPlayerCount().toString() + '/' + entry.getNumberOfPlayers() + " Players)" ;
-        playerCount.setText(playerCountText);
-        infoBtn.setBackgroundResource(R.drawable.ic_cancel_black_24dp);
-
+        final ImageButton infoBtn = view.findViewById(R.id.add_game_btn);
         infoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,7 +75,7 @@ public class MyGamesAdapter extends SearchAdapter {
             }
         });
 
-        row.setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DetailBottomSheetDialogFragment detailBottomSheetDialogFragment = new DetailBottomSheetDialogFragment(entry);
@@ -108,6 +83,6 @@ public class MyGamesAdapter extends SearchAdapter {
             }
         });
 
-        return row;
+        return view;
     }
 }

@@ -7,7 +7,7 @@ public class Game {
     private String _id;
     private String title;
     private String sport;
-    private String numberOfPlayers;
+    private Integer numberOfPlayers;
     private String locationName;
     private Point location;
     private String address;
@@ -17,6 +17,7 @@ public class Game {
     private User organizer;
     private String[] users;
     private boolean hasJoined;
+    private boolean isOrganizer;
 
     public String get_id() { return _id; }
 
@@ -28,7 +29,7 @@ public class Game {
         return sport;
     }
 
-    public String getNumberOfPlayers() {
+    public Integer getNumberOfPlayers() {
         return numberOfPlayers;
     }
 
@@ -62,7 +63,17 @@ public class Game {
         return organizer;
     }
 
-    public boolean isHasJoined() { return hasJoined; }
+    public boolean hasJoined() { return hasJoined; }
 
     public void setHasJoined(boolean hasJoined) { this.hasJoined = hasJoined; }
+
+    public boolean isOrganizer() { return isOrganizer; }
+
+    public String[] getUsers() {
+        return users;
+    }
+
+    public void setUsers(String[] users) {
+        this.users = users;
+    }
 }

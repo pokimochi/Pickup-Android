@@ -3,6 +3,7 @@ package com.usf.pickup.ui.search;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.opengl.Visibility;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,41 +64,16 @@ public class SearchAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        View row = view;
-
-        if(row == null) {
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.search_result_layout, null);
-        }
-
-        TextView gameTitle = row.findViewById(R.id.result_title);
-        TextView location = row.findViewById(R.id.result_location);
-        TextView playerCount = row.findViewById(R.id.result_players);
-        final ImageButton infoBtn = row.findViewById(R.id.add_game_btn);
         final Pickup pickup = (Pickup) context.getApplicationContext();
         final Game entry = searchResults.get(i);
-        final User organizer = entry.getOrganizer();
-        ImageView avatar = row.findViewById(R.id.avatar);
 
-        if(organizer.getProfilePicture() != null && !organizer.getProfilePicture().isEmpty()){
-            Picasso.get().load(context.getString(R.string.api_url) +
-                    context.getString(R.string.static_files) + "/" + organizer.getProfilePicture())
-                    .centerCrop()
-                    .transform(new RoundedCornersTransform(20))
-                    .fit()
-                    .into(avatar);
-        }
+        final View row = drawRow(view, entry);
 
-        gameTitle.setText(entry.getTitle().length() > 25 ? entry.getTitle().substring(0, 22) + "..." : entry.getTitle());
-        location.setText(entry.getLocationName());
-        String playerCountText = '(' + entry.getPlayerCount().toString() + '/' + entry.getNumberOfPlayers() + " Players)" ;
-        playerCount.setText(playerCountText);
-        infoBtn.setBackgroundResource(entry.isHasJoined() ? R.drawable.ic_cancel_black_24dp : R.drawable.ic_add_black_24dp);
-
+        final ImageButton infoBtn = row.findViewById(R.id.add_game_btn);
         infoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if(entry.isHasJoined()) {
+            public void onClick(View v) {
+                if(entry.hasJoined()) {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -108,8 +84,9 @@ public class SearchAdapter extends BaseAdapter {
                                         public void onResponse(ApiResult<Game> response) {
                                             if(response.isSuccess()) {
                                                 Toast.makeText(pickup, R.string.leave_success, Toast.LENGTH_SHORT).show();
-                                                infoBtn.setBackgroundResource(R.drawable.ic_add_black_24dp);
-                                                entry.setHasJoined(false);
+                                                entry.setHasJoined(response.getData().hasJoined());
+                                                entry.setUsers(response.getData().getUsers());
+                                                drawRow(row, entry);
                                             }
                                             else {
                                                 Toast.makeText(pickup, response.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -136,8 +113,9 @@ public class SearchAdapter extends BaseAdapter {
                         public void onResponse(ApiResult<Game> response) {
                             if(response.isSuccess()) {
                                 Toast.makeText(pickup, R.string.join_success, Toast.LENGTH_SHORT).show();
-                                infoBtn.setBackgroundResource(R.drawable.ic_cancel_black_24dp);
-                                entry.setHasJoined(true);
+                                entry.setHasJoined(response.getData().hasJoined());
+                                entry.setUsers(response.getData().getUsers());
+                                drawRow(row, entry);
                             }
                             else {
                                 Toast.makeText(pickup, response.getErrorMessage(), Toast.LENGTH_SHORT).show();
@@ -147,6 +125,38 @@ public class SearchAdapter extends BaseAdapter {
                 }
             }
         });
+
+        return row;
+    }
+
+    protected View drawRow(View row, final Game entry){
+        if(row == null) {
+            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = inflater.inflate(R.layout.search_result_layout, null);
+        }
+
+        TextView gameTitle = row.findViewById(R.id.result_title);
+        TextView location = row.findViewById(R.id.result_location);
+        TextView playerCount = row.findViewById(R.id.result_players);
+        final ImageButton infoBtn = row.findViewById(R.id.add_game_btn);
+        final User organizer = entry.getOrganizer();
+        ImageView avatar = row.findViewById(R.id.avatar);
+
+        if(organizer.getProfilePicture() != null && !organizer.getProfilePicture().isEmpty()){
+            Picasso.get().load(context.getString(R.string.api_url) +
+                    context.getString(R.string.static_files) + "/" + organizer.getProfilePicture())
+                    .centerCrop()
+                    .transform(new RoundedCornersTransform(20))
+                    .fit()
+                    .into(avatar);
+        }
+
+        gameTitle.setText(entry.getTitle().length() > 25 ? entry.getTitle().substring(0, 22) + "..." : entry.getTitle());
+        location.setText(entry.getLocationName());
+        String playerCountText = '(' + entry.getPlayerCount().toString() + '/' + entry.getNumberOfPlayers().toString() + " Players)" ;
+        playerCount.setText(playerCountText);
+        infoBtn.setBackgroundResource(entry.hasJoined() ? R.drawable.ic_cancel_black_24dp : R.drawable.ic_add_black_24dp);
+        infoBtn.setVisibility(entry.isOrganizer() || (entry.getPlayerCount().equals(entry.getNumberOfPlayers()) && !entry.hasJoined()) ? View.INVISIBLE : View.VISIBLE);
 
         row.setOnClickListener(new View.OnClickListener() {
             @Override
