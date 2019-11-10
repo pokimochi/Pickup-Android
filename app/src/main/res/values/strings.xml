@@ -80,6 +80,11 @@
     <string name="placeholder_profile_description">My Profile Description</string>
     <string name="edit_btn_desc">Profile description edit</string>
     <string name="location_button_description">Location Button</string>
+    <string name="join_failed">Unable to Join Game</string>
+    <string name="leave_failed">Unable to Leave Game</string>
+    <string name="join_success">Joined Game!</string>
+    <string name="leave_success">Left the Game!</string>
+    <string name="leave_confirmation">Are you sure you want to leave this game?</string>
     <string name="weather">Weather:</string>
     <string name="temperature_f">Temperature (F)</string>
     <string name="humidity">Humidity (%)</string>

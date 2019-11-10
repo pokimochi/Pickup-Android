@@ -22,6 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -485,5 +486,77 @@ public class ApiClient {
         });
 
         addToRequestQueue(jsonObjectRequest);
+    }
+
+    public void joinGame(final String jwt, final String gameId, final ApiResult.Listener<Game> listener){
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.join_game);
+
+            final JSONObject params = new JSONObject();
+
+            params.put("gameId", gameId);
+
+            GsonRequest<Game> gsonRequest = new GsonRequest<>(Request.Method.POST, url, Game.class, params, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<Game>() {
+                @Override
+                public void onResponse(Game response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
+
+                            listener.onResponse(ApiResult.<Game>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<Game>Error(ctx.getString(R.string.join_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (JSONException ignored) {
+        }
+    }
+
+    public void leaveGame(final String jwt, final String gameId, final ApiResult.Listener<Game> listener){
+        try {
+            String url = ctx.getResources().getString(R.string.api_url) +
+                    ctx.getResources().getString(R.string.leave_game);
+
+            final JSONObject params = new JSONObject();
+
+            params.put("gameId", gameId);
+
+            GsonRequest<Game> gsonRequest = new GsonRequest<>(Request.Method.POST, url, Game.class, params, Collections.singletonMap("Authorization", "Bearer " + jwt), new Response.Listener<Game>() {
+                @Override
+                public void onResponse(Game response) {
+                    listener.onResponse(ApiResult.Success(response));
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if(error.networkResponse != null && error.networkResponse.data != null){
+                        try {
+                            JSONObject response = new JSONObject(new String(error.networkResponse.data, StandardCharsets.UTF_8));
+
+                            listener.onResponse(ApiResult.<Game>Error(response.getString("message")));
+                            return;
+                        } catch (JSONException ignored) {
+                        }
+                    }
+
+                    listener.onResponse(ApiResult.<Game>Error(ctx.getString(R.string.leave_failed)));
+                }
+            });
+
+            addToRequestQueue(gsonRequest);
+        } catch (JSONException ignored) {
+        }
     }
 }
