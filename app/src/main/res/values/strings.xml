@@ -21,6 +21,7 @@
     <string name="title_activity_bottom_nav">BottomNav</string>
     <string name="title_create">Create Games</string>
     <string name="title_search_games">Search Games</string>
+    <string name="search_failed">Search Games Failed</string>
     <string name="title_profile">My Profile</string>
     <string name="title_activity_register">Register</string>
     <string name="title_activity_forget_password">Forget Password</string>
@@ -63,6 +64,8 @@
     <string name="invalid_description">Profile description must be 1 to 280 characters long</string>
     <string name="get_sports_failed">Failed to get the list of supported sports</string>
     <string name="get_settings_failed">Failed to get user settings</string>
+    <string name="update_profile_pic_failed">Failed to update profile picture</string>
+    <string name="get_weather_failed">Failed to get weather</string>
     <string name="default_players">10</string>
     <string name="game_description">Description</string>
     <string name="select_a_location">Tap to select a location…</string>
@@ -82,4 +85,7 @@
     <string name="join_success">Joined Game!</string>
     <string name="leave_success">Left the Game!</string>
     <string name="leave_confirmation">Are you sure you want to leave this game?</string>
+    <string name="weather">Weather:</string>
+    <string name="temperature_f">Temperature (F)</string>
+    <string name="humidity">Humidity (%)</string>
 </resources>

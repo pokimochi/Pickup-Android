@@ -1,8 +1,5 @@
 package com.usf.pickup.api;
 
-/**
- * A generic class that holds a result success w/ data or an error.
- */
 public class ApiResult<T> {
     private T data;
     private String errorMessage;
@@ -33,7 +30,6 @@ public class ApiResult<T> {
     }
 
     public interface Listener<T> {
-        /** Called when a response is received. */
         void onResponse(ApiResult<T> response);
     }
 }

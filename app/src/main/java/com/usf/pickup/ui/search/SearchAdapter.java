@@ -1,6 +1,7 @@
 package com.usf.pickup.ui.search;
 
 import android.app.AlertDialog;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
@@ -12,7 +13,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.squareup.picasso.Picasso;
+import com.usf.pickup.DetailBottomSheetDialogFragment;
 import com.usf.pickup.Pickup;
 import com.usf.pickup.R;
 import com.usf.pickup.api.ApiClient;
@@ -24,12 +28,14 @@ import com.usf.pickup.helpers.RoundedCornersTransform;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 public class SearchAdapter extends BaseAdapter {
 
     protected Context context;
     protected ArrayList<Game> searchResults;
     protected static LayoutInflater inflater = null;
     private User myUser;
+    private final String DIALOG_FRAGMENT_TAG = "com.usf.pickup.ui.search.detail";
 
     public SearchAdapter(Context context) {
         this.context = context;
@@ -99,7 +105,7 @@ public class SearchAdapter extends BaseAdapter {
         infoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(entry.isHasJoined() || myUser.get_id().equals(organizer.get_id())) {
+                if(entry.isHasJoined()) {
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -147,6 +153,14 @@ public class SearchAdapter extends BaseAdapter {
                         }
                     });
                 }
+            }
+        });
+
+        row.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DetailBottomSheetDialogFragment detailBottomSheetDialogFragment = new DetailBottomSheetDialogFragment(entry);
+                detailBottomSheetDialogFragment.show(((FragmentActivity) context).getSupportFragmentManager(), DIALOG_FRAGMENT_TAG);
             }
         });
 
