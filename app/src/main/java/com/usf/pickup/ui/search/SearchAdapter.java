@@ -152,7 +152,7 @@ public class SearchAdapter extends BaseAdapter {
         }
 
         gameTitle.setText(entry.getTitle().length() > 25 ? entry.getTitle().substring(0, 22) + "..." : entry.getTitle());
-        location.setText(entry.getLocationName());
+        location.setText(entry.getLocationName().length() > 25 ? entry.getLocationName().substring(0, 22) + "..." : entry.getLocationName());
         String playerCountText = '(' + entry.getPlayerCount().toString() + '/' + entry.getNumberOfPlayers().toString() + " Players)" ;
         playerCount.setText(playerCountText);
         infoBtn.setBackgroundResource(entry.hasJoined() ? R.drawable.ic_cancel_black_24dp : R.drawable.ic_add_black_24dp);
